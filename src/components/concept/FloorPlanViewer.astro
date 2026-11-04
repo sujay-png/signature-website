@@ -1,0 +1,69 @@
+---
+import { floorPlanData } from '../../data/floorPlans';
+
+interface Props {
+  initialImage?: string;
+  initialAlt?: string;
+}
+
+const first = (floorPlanData.find((l) => l.id === 'typical-floors') || floorPlanData[0]).units[0];
+const {
+  initialImage = first.image,
+  initialAlt = `${first.unitNo} - ${first.type} Floor Plan Technical Drawing`,
+} = Astro.props;
+const area = typeof first.saleableAreaSqFt === 'number' ? `${first.saleableAreaSqFt} sq. ft. (Saleable Area)` : first.saleableAreaSqFt;
+---
+
+<div class="viewer">
+  <div class="viewer__drawing">
+    <button type="button" class="viewer__plan plan-display-container" id="plan-display-container" aria-label="Open this drawing full screen">
+      <img src={initialImage} alt={initialAlt} id="active-plan-image" decoding="async" />
+    </button>
+    <div class="viewer__tools">
+      <span class="viewer__north">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l4 9h-8z" fill="currentColor"/><path d="M12 12v9"/></svg>
+        North aligned, official brochure technical drawing
+      </span>
+      <button type="button" class="link" id="plan-zoom-btn">Fullscreen</button>
+    </div>
+  </div>
+
+  <div class="viewer__details" aria-live="polite">
+    <h3 id="active-plan-title" class="viewer__name">{first.unitNo} ({first.type})</h3>
+    <p id="active-plan-area" class="viewer__area">{area}</p>
+    <p id="active-plan-desc" class="viewer__desc">{first.description}</p>
+    <p class="viewer__list-label">Layout Specifications &amp; Room Dimensions</p>
+    <ul class="viewer__features" id="active-plan-features">
+      {first.features.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .viewer { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); min-height: 620px; }
+  .viewer__drawing { display: flex; flex-direction: column; border-right: 1px solid var(--rule); }
+  .viewer__plan {
+    flex: 1; display: grid; place-items: center; padding: clamp(1rem, 3vw, 2.5rem); cursor: zoom-in;
+    background-color: #fbfbfc;
+    background-image: linear-gradient(var(--mist) 1px, transparent 1px), linear-gradient(90deg, var(--mist) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .viewer__plan img { max-height: 560px; width: auto; max-width: 100%; object-fit: contain; transition: opacity 0.25s var(--ease); }
+  .viewer__tools { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.9rem 1.5rem; border-top: 1px solid var(--rule); font-size: var(--fs-xs); color: var(--slate); }
+  .viewer__north { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .viewer__tools .link { font-size: var(--fs-xs); }
+
+  .viewer__details { padding: clamp(1.5rem, 3vw, 2.5rem); }
+  .viewer__name { font-size: var(--fs-lg); }
+  .viewer__area { font-family: var(--font-display); font-size: 1.2rem; color: var(--lotus); margin: 0.4rem 0 1.25rem; }
+  .viewer__desc { color: var(--slate); font-size: var(--fs-sm); }
+  .viewer__list-label { font-size: var(--fs-xs); color: var(--slate); margin: 1.75rem 0 0.5rem; }
+  .viewer__features { border-top: 1px solid var(--rule); }
+  .viewer__features :global(li) { padding: 0.7rem 0; border-bottom: 1px solid var(--rule); font-size: var(--fs-sm); }
+
+  @media (max-width: 1100px) {
+    .viewer { grid-template-columns: minmax(0, 1fr); }
+    .viewer__drawing { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .viewer__plan img { max-height: 70vh; }
+  }
+</style>

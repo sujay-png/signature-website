@@ -1,0 +1,55 @@
+---
+import { navItems } from '../../data/navigation';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+const isActive = (href: string) =>
+  currentPath === href || currentPath === `${href}/` || (href !== '/' && currentPath.startsWith(href));
+---
+
+<div class="mobile-menu-drawer" id="mobile-menu-drawer" aria-hidden="true">
+  <div class="wrap mobile-menu__inner">
+    <nav aria-label="Mobile">
+      <ul class="mobile-menu__list">
+        {navItems.map((item) => (
+          <li>
+            <a href={item.href} class={`mobile-nav-link ${isActive(item.href) ? 'active' : ''}`}>
+              <span class="mobile-nav-link__label">{item.label}</span>
+              {item.description && <span class="mobile-nav-link__desc">{item.description}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="mobile-menu__foot">
+      <p class="mobile-menu__place">Bendoorwell, Mangaluru</p>
+      <a href="tel:+918123307368" class="mobile-menu__phone num">+91 81233 07368</a>
+      <a href="/contact" class="btn btn--block">Enquire For Residence</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mobile-menu-drawer {
+    position: fixed; inset: var(--header-h) 0 0 0; z-index: 450;
+    background: var(--paper); color: var(--graphite); border-top: 1px solid var(--rule);
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    opacity: 0; visibility: hidden; transition: opacity 0.35s var(--ease), visibility 0.35s;
+  }
+  :global(.mobile-menu-drawer.open) { opacity: 1; visibility: visible; }
+  .mobile-menu__inner { min-height: 100%; display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem; padding-block: 1.5rem calc(2rem + env(safe-area-inset-bottom, 0px)); }
+  .mobile-menu__list li { border-bottom: 1px solid var(--rule); }
+  .mobile-nav-link { display: block; padding: 1.1rem 0; }
+  .mobile-nav-link__label { display: block; font-family: var(--font-display); font-size: clamp(1.6rem, 7vw, 2.2rem); line-height: 1.15; }
+  .mobile-nav-link__desc { display: block; font-size: var(--fs-xs); color: var(--slate); margin-top: 0.2rem; }
+  .mobile-nav-link.active .mobile-nav-link__label { color: var(--lotus); }
+  .mobile-menu__foot { display: grid; gap: 0.35rem; }
+  .mobile-menu__place { font-size: var(--fs-xs); color: var(--slate); margin: 0; }
+  .mobile-menu__phone { font-size: 1.4rem; margin-bottom: 1.25rem; }
+  .mobile-menu__mail { font-size: var(--fs-sm); color: var(--slate); margin-bottom: 1.25rem; }
+  @media (min-width: 1024px) { .mobile-menu-drawer { display: none; } }
+</style>

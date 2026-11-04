@@ -1,0 +1,285 @@
+export interface FloorPlanUnit {
+  id: string;
+  unitNo: string;
+  level: string;
+  type: '2 BHK' | '3 BHK' | 'Site Plan' | 'Basement Plan';
+  saleableAreaSqFt: number | string;
+  image: string;
+  fullImage?: string;
+  description: string;
+  features: string[];
+  dimensions?: {
+    living?: string;
+    dining?: string;
+    kitchen?: string;
+    utility?: string;
+    masterBedroom?: string;
+    secondBedroom?: string;
+    guestBedroom?: string;
+    balcony?: string;
+    toilets?: string;
+  };
+}
+
+export interface FloorLevelTab {
+  id: string;
+  label: string;
+  subtitle: string;
+  overviewImage: string;
+  units: FloorPlanUnit[];
+}
+
+export const floorPlanData: FloorLevelTab[] = [
+  {
+    id: "ground-floor",
+    label: "Ground Floor",
+    subtitle: "2 Residences & Grand Arrival Site Plan",
+    overviewImage: "/images/floor-plans/ground-floor-site.webp",
+    units: [
+      {
+        id: "gf-site",
+        unitNo: "Ground Site Plan",
+        level: "Ground Level",
+        type: "Site Plan",
+        saleableAreaSqFt: "Site & Parking Layout",
+        image: "/images/floor-plans/ground-floor-site.webp",
+        fullImage: "/images/floor-plans/ground-floor-plan.webp",
+        description: "Ground floor access with existing 9.00M wide road, proposed 6.00M wide access road, spacious driveway, surface parking bays, landscaped entryway, and welcoming lobby access.",
+        features: [
+          "9.00M & 6.00M wide access roads",
+          "Dedicated surface parking bays (01, 02, 03)",
+          "Covered entrance porch and reception lobby",
+          "Direct automated lift and staircase access",
+          "Security gate and vehicle turning radius"
+        ]
+      },
+      {
+        id: "gf-001",
+        unitNo: "Unit 001",
+        level: "Ground Floor",
+        type: "2 BHK",
+        saleableAreaSqFt: 1034,
+        image: "/images/floor-plans/ground-unit-001.webp",
+        fullImage: "/images/floor-plans/ground-floor-plan.webp",
+        description: "Efficiently planned 2 BHK residence featuring an expansive living lounge, dedicated dining zone, practical kitchen with utility balcony, private master bedroom with attached bath, and separate second bedroom.",
+        features: [
+          "Living room: 14'6\" x 10'0\"",
+          "Dining hall: 9'0\" x 12'6\"",
+          "Kitchen: 9'0\" x 10'10\" with 4'0\" utility",
+          "Master Bedroom: 10'0\" x 13'0\" with attached toilet 7'0\" x 4'6\"",
+          "Second Bedroom: 12'0\" x 10'0\"",
+          "Common toilet: 4'6\" x 8'0\""
+        ],
+        dimensions: {
+          living: "14'6\" x 10'0\"",
+          dining: "9'0\" x 12'6\"",
+          kitchen: "9'0\" x 10'10\"",
+          utility: "4'0\" Wide",
+          masterBedroom: "10'0\" x 13'0\"",
+          secondBedroom: "12'0\" x 10'0\"",
+          toilets: "Attached 7'0\"x4'6\", Common 4'6\"x8'0\""
+        }
+      },
+      {
+        id: "gf-002",
+        unitNo: "Unit 002",
+        level: "Ground Floor",
+        type: "3 BHK",
+        saleableAreaSqFt: 1718,
+        image: "/images/floor-plans/ground-unit-002.webp",
+        fullImage: "/images/floor-plans/ground-floor-plan.webp",
+        description: "Expansive 3 BHK ground floor residence delivering generous family proportions, separate dining salon, spacious kitchen with utility deck, three private bedrooms, and premium cross-ventilation.",
+        features: [
+          "Spacious light-filled living salon",
+          "Dedicated family dining area",
+          "Kitchen with extended 4'0\" utility area",
+          "Grand Master Suite with attached luxury bath",
+          "Two generous additional bedrooms with attached baths",
+          "Optimal ground-level tranquility and accessibility"
+        ],
+        dimensions: {
+          living: "Spacious Living Room",
+          dining: "Dedicated Dining Salon",
+          kitchen: "Gourmet Kitchen",
+          utility: "4'0\" Wide Utility",
+          masterBedroom: "Master Suite",
+          secondBedroom: "Bedroom 2",
+          guestBedroom: "Bedroom 3",
+          toilets: "Attached designer baths"
+        }
+      }
+    ]
+  },
+  {
+    id: "typical-floors",
+    label: "Typical Floors (1st - 4th)",
+    subtitle: "4 Exclusive Residences Per Floor",
+    overviewImage: "/images/floor-plans/typical-floor-cluster.webp",
+    units: [
+      {
+        id: "tf-cluster",
+        unitNo: "Floor Cluster (All 4 Units)",
+        level: "Floors 1st to 4th",
+        type: "Site Plan",
+        saleableAreaSqFt: "4 Units / Floor",
+        image: "/images/floor-plans/typical-floor-cluster.webp",
+        fullImage: "/images/floor-plans/typical-floor-plan.webp",
+        description: "Intelligently clustered floor layout with just 4 residences surrounding a central ventilated lobby and 8-passenger automated lift core, providing supreme privacy and zero shared common living room walls.",
+        features: [
+          "Only 4 residences per floor for curated privacy",
+          "Central high-speed automated elevator core",
+          "Naturally ventilated corridors and wide stairwell",
+          "Dual corner aspects for abundant natural light",
+          "Wide private balconies on every residence"
+        ]
+      },
+      {
+        id: "tf-001",
+        unitNo: "Unit 001",
+        level: "Floors 1st to 4th",
+        type: "3 BHK",
+        saleableAreaSqFt: 1700,
+        image: "/images/floor-plans/typical-unit-001.webp",
+        fullImage: "/images/floor-plans/typical-floor-plan.webp",
+        description: "Signature 3 BHK corner apartment boasting double balconies, expansive living area, family dining, oversized master bedroom with attached bathroom, and two additional bedrooms with exterior views.",
+        features: [
+          "Living Lounge: 17'0\" x 10'6\" with 4'0\" wide balcony",
+          "Family Dining: 12'0\" x 16'0\" with secondary 4'0\" wide balcony",
+          "Kitchen: 10'0\" x 12'0\" with 4'0\" wide utility deck",
+          "Master Suite: 12'0\" x 14'0\" with attached bath 7'0\" x 5'6\"",
+          "Guest Bedroom: 14'0\" x 11'0\" with private 4'0\" balcony",
+          "Bedroom 3: 11'0\" x 11'0\" with attached bath"
+        ],
+        dimensions: {
+          living: "17'0\" x 10'6\"",
+          dining: "12'0\" x 16'0\"",
+          kitchen: "10'0\" x 12'0\"",
+          utility: "4'0\" Wide",
+          masterBedroom: "12'0\" x 14'0\"",
+          secondBedroom: "11'0\" x 11'0\"",
+          guestBedroom: "14'0\" x 11'0\"",
+          balcony: "Multiple 4'0\" Wide Balconies",
+          toilets: "Ensuite to all bedrooms"
+        }
+      },
+      {
+        id: "tf-002",
+        unitNo: "Unit 002",
+        level: "Floors 1st to 4th",
+        type: "2 BHK",
+        saleableAreaSqFt: 1183,
+        image: "/images/floor-plans/typical-unit-002.webp",
+        fullImage: "/images/floor-plans/typical-floor-plan.webp",
+        description: "Spacious 2 BHK home with double balconies, large living lounge opening to a breezy balcony, dining hall, kitchen with separate utility balcony, and dual serene bedrooms.",
+        features: [
+          "Living Room: 14'6\" x 10'0\" with 4'0\" wide balcony",
+          "Dining Hall: 9'0\" x 12'6\"",
+          "Kitchen: 8'7\" x 11'10\" with 4'5\" utility deck",
+          "Master Suite: 10'6\" x 13'0\" with attached bath 7'0\" x 4'6\" and balcony",
+          "Second Bedroom: 12'0\" x 10'0\"",
+          "Common Bathroom: 4'6\" x 8'0\""
+        ],
+        dimensions: {
+          living: "14'6\" x 10'0\"",
+          dining: "9'0\" x 12'6\"",
+          kitchen: "8'7\" x 11'10\"",
+          utility: "4'5\" Wide",
+          masterBedroom: "10'6\" x 13'0\"",
+          secondBedroom: "12'0\" x 10'0\"",
+          balcony: "4'0\" Wide Balcony",
+          toilets: "7'0\" x 4'6\" (Att) & 4'6\" x 8'0\" (Comm)"
+        }
+      },
+      {
+        id: "tf-003",
+        unitNo: "Unit 003",
+        level: "Floors 1st to 4th",
+        type: "2 BHK",
+        saleableAreaSqFt: 1125,
+        image: "/images/floor-plans/typical-unit-003.webp",
+        fullImage: "/images/floor-plans/page-5-plans.webp",
+        description: "Corner 2 BHK layout designed for maximum natural daylight and privacy, complete with a long living room with 4'6\" balcony, separate dining, modern kitchen, and comfortable master suite.",
+        features: [
+          "Living Hall: 10'0\" x 16'6\" with 4'6\" wide balcony",
+          "Dining Area: 8'0\" x 10'9\"",
+          "Kitchen: 10'0\" x 8'0\" with 4'6\" wide utility",
+          "Master Suite: 11'0\" x 13'0\" with attached toilet 7'0\" x 4'3\" & 4'6\" balcony",
+          "Second Bedroom: 10'0\" x 10'9\"",
+          "Common Toilet: 4'3\" x 6'4\""
+        ],
+        dimensions: {
+          living: "10'0\" x 16'6\"",
+          dining: "8'0\" x 10'9\"",
+          kitchen: "10'0\" x 8'0\"",
+          utility: "4'6\" Wide",
+          masterBedroom: "11'0\" x 13'0\"",
+          secondBedroom: "10'0\" x 10'9\"",
+          balcony: "Dual 4'6\" Wide Balconies",
+          toilets: "7'0\" x 4'3\" (Att) & 4'3\" x 6'4\" (Comm)"
+        }
+      },
+      {
+        id: "tf-004",
+        unitNo: "Unit 004",
+        level: "Floors 1st to 4th",
+        type: "2 BHK",
+        saleableAreaSqFt: 1084,
+        image: "/images/floor-plans/typical-unit-004.webp",
+        fullImage: "/images/floor-plans/page-5-plans.webp",
+        description: "Smart, ergonomic 2 BHK apartment featuring dual balconies, sunlit living area, dedicated dining space, efficient kitchen with utility, and master bedroom with 5'0\" wide balcony.",
+        features: [
+          "Living Room: 12'6\" x 10'0\" with 4'0\" wide balcony",
+          "Dining Hall: 9'0\" x 10'4\"",
+          "Kitchen: 9'9\" x 8'0\" with 4'6\" wide utility",
+          "Master Suite: 13'4\" x 10'0\" with attached bath 7'0\" x 4'3\" & 5'0\" wide balcony",
+          "Second Bedroom: 11'4\" x 10'0\"",
+          "Common Toilet: 4'6\" x 6'4\""
+        ],
+        dimensions: {
+          living: "12'6\" x 10'0\"",
+          dining: "9'0\" x 10'4\"",
+          kitchen: "9'9\" x 8'0\"",
+          utility: "4'6\" Wide",
+          masterBedroom: "13'4\" x 10'0\"",
+          secondBedroom: "11'4\" x 10'0\"",
+          balcony: "4'0\" & 5'0\" Wide Balconies",
+          toilets: "7'0\" x 4'3\" (Att) & 4'6\" x 6'4\" (Comm)"
+        }
+      }
+    ]
+  },
+  {
+    id: "basement",
+    label: "Basement Level",
+    subtitle: "Dedicated Secure Vehicle Parking",
+    overviewImage: "/images/floor-plans/basement-parking-plan.webp",
+    units: [
+      {
+        id: "bs-plan",
+        unitNo: "Basement Parking Layout",
+        level: "Basement Floor",
+        type: "Basement Plan",
+        saleableAreaSqFt: "16+ Marked Bays",
+        image: "/images/floor-plans/basement-parking-plan.webp",
+        fullImage: "/images/floor-plans/basement-parking-plan.webp",
+        description: "Full subterranean parking garage featuring numbered vehicle bays, generous two-way driveways, gentle vehicular entry and exit ramps, direct lift core access to all apartment floors, and emergency egress stairs.",
+        features: [
+          "Individually numbered covered car parking bays",
+          "Wide turning radius and driveways",
+          "Direct access to 8-passenger automated lift core",
+          "Fire escape stairwell and smoke ventilation",
+          "24/7 CCTV surveillance and security lighting"
+        ]
+      }
+    ]
+  }
+];
+
+export const allApartmentConfigurations = [
+  { type: "2 BHK", saleableArea: "1034 sq. ft.", level: "Ground Floor", unit: "001" },
+  { type: "2 BHK", saleableArea: "1084 sq. ft.", level: "1st - 4th Floors", unit: "004" },
+  { type: "2 BHK", saleableArea: "1125 sq. ft.", level: "1st - 4th Floors", unit: "003" },
+  { type: "2 BHK", saleableArea: "1183 sq. ft.", level: "1st - 4th Floors", unit: "002" },
+  { type: "3 BHK", saleableArea: "1700 sq. ft.", level: "1st - 4th Floors", unit: "001" },
+  { type: "3 BHK", saleableArea: "1718 sq. ft.", level: "Ground Floor", unit: "002" },
+];

@@ -1,0 +1,172 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import EnquiryForm from '../components/contact/EnquiryForm.astro';
+import { projectData } from '../data/project';
+import { conceptStudio } from '../data/conceptDesign';
+
+const promoter = projectData.promoter;
+---
+
+<PageLayout
+  title="Contact Us | Lotus Signature by Signature Properties, Mangaluru"
+  description="Contact Signature Properties for Lotus Signature residences in Bendoorwell, Mangaluru. Connect with our booking team: Javid Nadeem or Sampath Shetty via call or WhatsApp."
+  currentPath="/contact"
+>
+  <PageHero
+    crumb="Contact"
+    eyebrow="Signature Properties, residential concierge & booking salon"
+    title="Begin Your Dialogue With Signature Properties."
+    lead="Connect with our senior advisory team for private site walkthroughs in Bendoorwell, bespoke configuration consultations, and technical drawing reviews."
+    image={{ src: '/images/exterior/exterior-dusk.webp', alt: 'Lotus Signature - Architectural Arrival & Entrance at Dusk', width: 1480, height: 1400, pos: '50% 90%' }}
+    caption={[
+      { label: 'Salon Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM' },
+      { label: 'Advisory Desk', value: 'Javid Nadeem, Sampath Shetty' },
+      { label: 'Site Address', value: 'Bendoorwell, Mangaluru' },
+    ]}
+  />
+
+  <section class="section tone-paper" id="contact-section">
+    <div class="wrap contact">
+      <div class="contact__info">
+        <!-- Quick channels -->
+        <div class="contact__channels actions">
+          <a
+            href="https://wa.me/919986917368?text=Hello%20Signature%20Properties,%20I%20would%20like%20to%20enquire%20about%20Lotus%20Signature%20residences%20in%20Bendoorwell."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn--wa btn--sm"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.34-1.66a11.88 11.88 0 0 0 5.71 1.46h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.41"/></svg>
+            WhatsApp: +91 99869 17368
+          </a>
+        </div>
+
+        <!-- Promoter -->
+        <section class="contact__block">
+          <div class="contact__brand">
+            <img src={promoter.logo} alt={promoter.name} width="226" height="226" />
+            <div>
+              <h2 class="contact__h">{promoter.name}</h2>
+              <p class="contact__motto">{promoter.motto}</p>
+            </div>
+          </div>
+          {(promoter.address.full || promoter.phones.length > 0 || promoter.email || promoter.website) && (
+            <dl class="contact__dl">
+              {promoter.address.full && (
+                <div>
+                  <dt>Office Address</dt>
+                  <dd>{promoter.address.full}</dd>
+                </div>
+              )}
+              {promoter.phones.length > 0 && (
+                <div>
+                  <dt>Office Phone</dt>
+                  <dd>{promoter.phones.map((ph) => <><a href={`tel:+91${ph.replace(/\s/g, '')}`}>{ph}</a><br /></>)}</dd>
+                </div>
+              )}
+              {promoter.email && (
+                <div>
+                  <dt>Email</dt>
+                  <dd><a href={`mailto:${promoter.email}`}>{promoter.email}</a><br /><a href={`mailto:${conceptStudio.email}`}>{conceptStudio.email}</a></dd>
+                </div>
+              )}
+              {promoter.website && (
+                <div>
+                  <dt>Corporate Website</dt>
+                  <dd><a href={promoter.website} target="_blank" rel="noopener noreferrer">{promoter.website.replace(/^https?:\/\//, '')}</a></dd>
+                </div>
+              )}
+            </dl>
+          )}
+        </section>
+
+        <!-- Booking contacts -->
+        <section class="contact__block" id="booking-contacts">
+          <p class="kicker">Direct booking advisors</p>
+          <h2 class="contact__h contact__h--lg">Connect With Our Sales Directors</h2>
+          <p class="muted small">For immediate unit allocation, brochure queries, and scheduled site visits:</p>
+          <ul class="advisors">
+            {projectData.bookingContacts.map((c) => (
+              <li class="advisor">
+                <div>
+                  <h3 class="advisor__name">{c.name}</h3>
+                  <span class="advisor__role">Booking Contact</span>
+                </div>
+                <div class="advisor__actions">
+                  <a href={`tel:${c.phone}`} class="advisor__phone" title={`Call ${c.name}`}>{c.displayPhone}</a>
+                  <a href={c.whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn--wa btn--sm" title={`WhatsApp ${c.name}`}>
+                    WhatsApp
+                  </a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- Site -->
+        <section class="contact__block">
+          <p class="contact__dl-label">Project Site Address</p>
+          <h2 class="contact__h">Lotus Signature</h2>
+          <p class="muted">Bendoorwell, Mangaluru, Karnataka &ndash; 575003.</p>
+          <a href={projectData.location.googleMapsLink} target="_blank" rel="noopener noreferrer" class="link">Open Location In Google Maps</a>
+        </section>
+      </div>
+
+      <div class="contact__form">
+        <EnquiryForm />
+      </div>
+    </div>
+  </section>
+
+  <section class="tone-paper contact-map">
+    <div class="wrap">
+      <div class="contact-map__frame">
+        <iframe
+          src={projectData.location.googleMapsEmbed}
+          title="Google Maps Location for Lotus Signature, Bendoorwell"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+  .contact__form { position: sticky; top: calc(var(--header-h) + 1.5rem); }
+  .contact__channels { margin-bottom: 1rem; }
+  .contact__block { padding-block: 2.25rem; border-top: 1px solid var(--rule); }
+  .contact__brand { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 1.75rem; }
+  .contact__brand img { width: 72px; height: auto; }
+  .contact__h { font-size: 1.45rem; }
+  .contact__h--lg { font-size: var(--fs-lg); margin-bottom: 0.75rem; }
+  .contact__motto { font-style: italic; color: var(--lotus); margin: 0.1rem 0 0; font-size: var(--fs-sm); }
+  .contact__dl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; }
+  .contact__dl > div:first-child { grid-column: 1 / -1; }
+  .contact__dl dt, .contact__dl-label { font-size: var(--fs-xs); color: var(--slate); margin-bottom: 0.3rem; }
+  .contact__dl dd { font-size: var(--fs-sm); line-height: 1.6; overflow-wrap: anywhere; }
+  .contact__dl a { border-bottom: 1px solid var(--rule-strong); }
+  .contact__dl a:hover { color: var(--lotus); border-color: var(--lotus); }
+  .contact__block .link { margin-top: 0.5rem; }
+
+  .advisors { margin-top: 1.5rem; border-top: 1px solid var(--rule); }
+  .advisor { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+  .advisor__name { font-size: 1.2rem; }
+  .advisor__role { font-size: var(--fs-xs); color: var(--slate); }
+  .advisor__actions { display: flex; align-items: center; gap: 1.25rem; }
+  .advisor__phone { font-variant-numeric: tabular-nums; font-weight: 450; }
+  .advisor__phone:hover { color: var(--lotus); }
+
+  .contact-map { padding-bottom: var(--section); }
+  .contact-map__frame { aspect-ratio: 21 / 8; width: 100%; background: var(--mist); border: 1px solid var(--rule); }
+  .contact-map__frame iframe { width: 100%; height: 100%; border: 0; display: block; filter: grayscale(0.35); }
+
+  @media (max-width: 960px) {
+    .contact { grid-template-columns: 1fr; }
+    .contact__form { position: static; }
+  }
+  @media (max-width: 860px) { .contact-map__frame { aspect-ratio: auto; height: 340px; } }
+  @media (max-width: 520px) { .contact__dl { grid-template-columns: 1fr; } }
+</style>

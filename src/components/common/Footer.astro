@@ -1,0 +1,145 @@
+---
+import { projectData } from '../../data/project';
+import { footerQuickLinks } from '../../data/navigation';
+import { conceptStudio } from '../../data/conceptDesign';
+
+const promoter = projectData.promoter;
+const hasOffice = Boolean(promoter.address.line1);
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-band grid-12">
+      <div class="footer-band__mark">
+        <img src="/images/branding/lotus-signature-logo-transparent.png" alt="Lotus Signature, Bendoorwell, Mangaluru" width="422" height="267" loading="lazy" />
+      </div>
+      <div class="footer-band__body">
+        <h2 class="footer-band__title">“Make Your Mark. Make It Home.”</h2>
+        <p class="footer-band__lead">22 exclusive 2 &amp; 3 BHK residences situated at the pinnacle of Bendoorwell, Mangaluru.</p>
+        <div class="actions">
+          <a href="/contact" class="btn">Schedule A Private Presentation</a>
+          <a
+            href="https://wa.me/919986917368?text=Hello,%20I%20would%20like%20to%20enquire%20about%20Lotus%20Signature."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn--ghost"
+          >
+            Chat On WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-cols">
+      <div class="footer-col footer-col--brand">
+        <img src={promoter.logo} alt={promoter.name} width="226" height="226" class="footer-logo" loading="lazy" />
+        <p class="footer-col__strong">{promoter.name}</p>
+        <p class="footer-motto">{promoter.motto}</p>
+        <p class="footer-bio">
+          Promoted by {promoter.name}, Lotus Signature embodies our devotion to uncompromising structural integrity, thoughtful floor plan design and timeless coastal living.
+        </p>
+      </div>
+
+      <nav class="footer-col" aria-label="Footer">
+        <h3 class="footer-col__title">Navigation</h3>
+        <ul class="footer-links">
+          {footerQuickLinks.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h3 class="footer-col__title">Project Site</h3>
+        <p class="footer-col__strong">Lotus Signature</p>
+        <p>Bendoorwell, Mangaluru<br />Karnataka &ndash; 575003, India</p>
+        <a href={projectData.location.googleMapsLink} target="_blank" rel="noopener noreferrer" class="link">
+          View On Google Maps
+        </a>
+      </div>
+
+      {hasOffice && (
+        <div class="footer-col">
+          <h3 class="footer-col__title">Office Address</h3>
+          <p class="footer-col__strong">{promoter.name}</p>
+          <p>
+            {[promoter.address.line1, promoter.address.line2, promoter.address.line3].filter(Boolean).map((l) => <>{l}<br /></>)}
+            {promoter.address.city}{promoter.address.pin && <> &ndash; {promoter.address.pin}</>}
+          </p>
+          <p class="footer-contact">
+            {promoter.phones.map((ph) => <>Office <a href={`tel:+91${ph.replace(/\s/g, '')}`}>{ph}</a><br /></>)}
+            {promoter.email && <a href={`mailto:${promoter.email}`}>{promoter.email}</a>}<br />
+            <a href={`mailto:${conceptStudio.email}`}>{conceptStudio.email}</a>
+          </p>
+        </div>
+      )}
+
+      <div class="footer-col">
+        <h3 class="footer-col__title">Direct Booking Desk</h3>
+        <ul class="footer-reps">
+          {projectData.bookingContacts.map((c) => (
+            <li>
+              <span>{c.name}</span>
+              <a href={`tel:${c.phone}`}>{c.displayPhone}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <p>&copy; {new Date().getFullYear()} {promoter.name}. All rights reserved. Lotus Signature is a residential development in Bendoorwell, Mangaluru.</p>
+      <p>Information sourced from official Lotus Signature brochure. Saleable areas: 1034 &ndash; 1718 sq. ft.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding-top: clamp(4rem, 8vw, 7rem); font-size: var(--fs-sm); background: #fff; border-top: 1px solid var(--rule); }
+  .footer-band { row-gap: 2.5rem; padding-bottom: clamp(3.5rem, 7vw, 6rem); border-bottom: 1px solid var(--rule); align-items: center; }
+  .footer-band__mark { grid-column: 1 / span 4; }
+  .footer-band__mark img { width: min(280px, 100%); height: auto; }
+  .footer-band__body { grid-column: 6 / span 7; }
+  .footer-band__title { font-size: var(--fs-xl); line-height: 1.08; }
+  .footer-band__lead { color: var(--slate); font-size: var(--fs-md); font-weight: 340; margin: 1.25rem 0 2rem; }
+
+  .footer-cols {
+    display: grid; grid-template-columns: 1.15fr 0.75fr 0.95fr 1.45fr 0.95fr; gap: 2.25rem;
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+  }
+  .footer-col p { color: var(--slate); margin-bottom: 0.9rem; }
+  .footer-col a:not(.link):hover { color: var(--lotus); text-decoration: underline; text-underline-offset: 3px; }
+  .footer-col__title { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 480; color: var(--lotus); margin-bottom: 1.1rem; }
+  .footer-col__strong { color: var(--graphite) !important; font-weight: 450; margin-bottom: 0.35rem !important; }
+  .footer-logo { width: 96px; height: auto; margin-bottom: 1rem; }
+  .footer-motto { font-style: italic; max-width: 30ch; }
+  .footer-bio { max-width: 34ch; }
+  .footer-links { display: grid; gap: 0.55rem; }
+  .footer-links a { color: var(--slate); }
+  .footer-contact a { color: var(--graphite); }
+  .footer-contact { overflow-wrap: anywhere; }
+  .footer-reps { display: grid; gap: 0.75rem; }
+  .footer-reps li { display: grid; color: var(--slate); }
+  .footer-reps a { color: var(--graphite); font-variant-numeric: tabular-nums; }
+
+  .footer-legal {
+    display: flex; justify-content: space-between; gap: 1rem 3rem; flex-wrap: wrap;
+    padding-block: 1.75rem 2.25rem; border-top: 1px solid var(--rule);
+    font-size: var(--fs-xs); color: var(--slate);
+  }
+  .footer-legal p { margin: 0; max-width: none; }
+
+  @media (max-width: 1100px) {
+    .footer-cols { grid-template-columns: repeat(3, 1fr); }
+    .footer-col--brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 860px) {
+    .footer-band__mark, .footer-band__body { grid-column: 1 / -1; }
+  }
+  @media (max-width: 600px) {
+    .footer-cols { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    .footer-cols { grid-template-columns: 1fr; }
+  }
+</style>

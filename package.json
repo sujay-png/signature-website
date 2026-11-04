@@ -1,0 +1,26 @@
+{
+  "name": "lotus-signature",
+  "version": "1.0.0",
+  "description": "Lotus Signature - Premium Residential Apartments in Bendoorwell, Mangaluru by Lotus Properties",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro preview",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.1.9",
+    "@fontsource-variable/jost": "^5.3.0",
+    "@fontsource/marcellus": "^5.3.0",
+    "astro": "^7.4.4"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^1.1.0",
+    "@types/node": "^26.6.6",
+    "pdfjs-dist": "^3.11.174",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2"
+  }
+}

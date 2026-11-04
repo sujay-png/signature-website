@@ -1,0 +1,63 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { projectData } from '../../data/project';
+---
+
+<section class="section tone-white location" id="location">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="Neighbourhood & connectivity"
+      title="Connected to Everything. Close to What Matters."
+      description="Nestled in the prestigious residential precinct of Bendoorwell, Lotus Signature places you within immediate reach of Mangaluru's premier educational institutions, healthcare centers, places of worship, and commercial hubs."
+    />
+
+    <div class="location__grid">
+      <div class="location__text">
+        <h3 class="location__place">Bendoorwell, Mangaluru</h3>
+        <p class="muted">
+          A premier urban residential locale defined by verdant tree-lined avenues, quiet residential lanes, and seamless arterial road connections across Mangaluru city.
+        </p>
+        <ul class="location__points">
+          <li>Direct access from existing 9.00M and proposed 6.00M wide municipal roads</li>
+          <li>Minutes to PVS Junction, Hampankatta, Kadri, and Kankanady</li>
+          <li>Proximity to St. Theresa School, colleges, and specialty hospitals</li>
+        </ul>
+        <div class="actions">
+          <a href={projectData.location.googleMapsLink} target="_blank" rel="noopener noreferrer" class="btn">Open In Google Maps</a>
+          <a href="/contact" class="btn btn--ghost">Enquire For Site Visit</a>
+        </div>
+      </div>
+
+      <div class="location__map">
+        <div class="location__iframe">
+          <iframe
+            src={projectData.location.googleMapsEmbed}
+            title="Lotus Signature Location Map - Bendoorwell, Mangaluru"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <div class="location__address">
+          <div>
+            <span class="location__address-label">Site Address</span>
+            <span>Lotus Signature, Bendoorwell, Mangaluru</span>
+          </div>
+          <span class="location__pin">Karnataka 575003</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .location__grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .location__place { font-size: var(--fs-lg); margin-bottom: 1rem; }
+  .location__points { margin: 1.75rem 0 2.25rem; border-top: 1px solid var(--rule); }
+  .location__points li { padding: 0.9rem 0; border-bottom: 1px solid var(--rule); font-size: var(--fs-sm); }
+  .location__iframe { aspect-ratio: 16 / 11; background: var(--mist); border: 1px solid var(--rule); }
+  .location__iframe iframe { width: 100%; height: 100%; border: 0; display: block; filter: grayscale(0.35) contrast(1.02); }
+  .location__address { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; padding-top: 1rem; font-size: var(--fs-sm); }
+  .location__address-label { display: block; font-size: var(--fs-xs); color: var(--slate); }
+  .location__pin { font-size: var(--fs-xs); color: var(--slate); }
+  @media (max-width: 960px) { .location__grid { grid-template-columns: 1fr; } }
+</style>

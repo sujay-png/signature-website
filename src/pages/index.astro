@@ -1,0 +1,36 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Marquee from '../components/home/Marquee.astro';
+import ProjectIntro from '../components/home/ProjectIntro.astro';
+import ArchitectureShowcase from '../components/home/ArchitectureShowcase.astro';
+import ProjectHighlights from '../components/home/ProjectHighlights.astro';
+import ApartmentTypes from '../components/home/ApartmentTypes.astro';
+import AmenitiesPreview from '../components/home/AmenitiesPreview.astro';
+import LocationPreview from '../components/home/LocationPreview.astro';
+import CTASection from '../components/ui/CTASection.astro';
+---
+
+<PageLayout
+  title="Lotus Signature | Luxury 2 & 3 BHK Apartments in Bendoorwell, Mangaluru"
+  description="Discover Lotus Signature: 22 exclusive residential apartments in Bendoorwell, Mangaluru by Signature Properties. Featuring 1034 to 1718 sq. ft., automated elevator, gym, indoor games, reticulated gas and basement parking."
+  currentPath="/"
+>
+  <Hero />
+  <Marquee />
+  <ProjectIntro />
+  <ProjectHighlights />
+  <ArchitectureShowcase />
+  <ApartmentTypes />
+  <AmenitiesPreview />
+  <LocationPreview />
+  <CTASection
+    eyebrow="An exclusive address awaits"
+    title="Your Next Chapter Begins Here."
+    description="Discover the spaces, thoughtful details and contemporary design that make Lotus Signature a distinctive residential address."
+    primaryCtaText="Enquire Now"
+    primaryCtaLink="/contact"
+    secondaryCtaText="Contact Our Team"
+    secondaryCtaLink="/contact#booking-contacts"
+  />
+</PageLayout>

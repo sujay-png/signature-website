@@ -1,0 +1,87 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+---
+
+<section class="section tone-white arch" id="architecture">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="Facade & design philosophy"
+      title="Architecture That Makes An Impression."
+      description="Clean rectilinear geometries, natural timber accents, expansive glass railings and refined cantilevered balconies converge in an enduring Mangaluru silhouette."
+    />
+  </div>
+
+  <!-- Scroll-driven reveal: the frame opens from a small aperture to full width -->
+  <div class="arch__track">
+    <div class="arch__sticky">
+      <div
+        class="arch__media zoomable"
+        data-lightbox="true"
+        data-lightbox-src="/images/exterior/exterior-dusk-full.webp"
+        data-lightbox-caption="Lotus Signature - Complete Evening Architectural Facade with Illuminated Balconies and Landscaped Grounds"
+      >
+        <img
+          src="/images/hero/hero-exterior.webp"
+          alt="Lotus Signature - Exterior Architectural View at Dusk in Bendoorwell"
+          width="1720"
+          height="1450"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <dl class="glass-light arch__facts">
+        <div><dt>Structure</dt><dd>Ground + 4 Upper Floors with Terrace Pergola</dd></div>
+        <div><dt>Materials</dt><dd>Vitrified Cladding, Natural Granite &amp; Melamine Wood</dd></div>
+        <div><dt>Access</dt><dd>9.00M &amp; 6.00M Wide Direct Access Roads</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .arch { padding-bottom: 0; }
+  .arch__sticky { position: relative; height: clamp(460px, 82vh, 860px); padding-inline: var(--gutter); max-width: calc(var(--max-wide) + var(--gutter) * 2); margin-inline: auto; }
+  .arch__media { position: relative; height: 100%; overflow: hidden; background: #3b4a6a; cursor: zoom-in; }
+  .arch__media img { width: 100%; height: 100%; object-fit: cover; object-position: 0% 32%; transform: scale(1.12); transform-origin: 0% 32%; }
+
+  .arch__facts {
+    position: absolute; left: calc(var(--gutter) + 1.5rem); right: calc(var(--gutter) + 1.5rem); bottom: 1.5rem;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+  }
+  .arch__facts > div { padding: 1.1rem 1.5rem; }
+  .arch__facts > div + div { border-left: 1px solid rgba(34, 37, 43, 0.12); }
+  .arch__facts dt { font-size: var(--fs-xs); color: var(--slate); margin-bottom: 0.25rem; }
+  .arch__facts dd { font-size: var(--fs-sm); font-weight: 450; }
+
+  .arch { padding-bottom: var(--section); }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) and (min-width: 861px) {
+      .arch { padding-bottom: 0; }
+      .arch__track { height: 200vh; view-timeline: --arch block; }
+      .arch__sticky { position: sticky; top: var(--header-h); height: calc(100vh - var(--header-h)); padding-bottom: 1.5rem; }
+      .arch__media { animation-name: arch-open; animation-timing-function: linear; animation-fill-mode: both; }
+      .arch__sticky .arch__media { animation-timeline: --arch; animation-range: contain 0% contain 55%; }
+      .arch__media img { animation-name: arch-zoom; animation-timing-function: linear; animation-fill-mode: both; }
+      .arch__sticky .arch__media img { animation-timeline: --arch; animation-range: contain 0% contain 80%; }
+      .arch__facts { animation-name: arch-facts; animation-timing-function: linear; animation-fill-mode: both; bottom: 3rem; }
+      .arch__sticky .arch__facts { animation-timeline: --arch; animation-range: contain 45% contain 65%; }
+    }
+  }
+  @keyframes arch-open {
+    from { clip-path: inset(16% 30% 16% 30% round 999px); }
+    to { clip-path: inset(0 0 0 0 round 0); }
+  }
+  @keyframes arch-zoom { from { transform: scale(1.45); } to { transform: scale(1.12); } }
+  @keyframes arch-facts { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 860px) {
+    .arch__sticky { height: auto; }
+    .arch__media { aspect-ratio: 4 / 5; height: auto; }
+    .arch__media img { object-position: 40% 30%; transform: none; }
+    .arch__facts { position: static; grid-template-columns: 1fr; margin-top: 1rem; }
+    .arch__facts > div { padding: 0.9rem 0; border-bottom: 1px solid var(--rule); }
+    .arch__facts > div + div { border-left: 0; }
+  }
+</style>

@@ -1,0 +1,276 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import CTASection from '../components/ui/CTASection.astro';
+import { conceptStudio, conceptCategories, conceptProjects, pmcProjects } from '../data/conceptDesign';
+
+const ongoing = conceptProjects.filter((p) => p.status === 'Ongoing').length;
+const completed = conceptProjects.filter((p) => p.status === 'Completed').length;
+const countBy = (c: string) => conceptProjects.filter((p) => p.category === c).length;
+const initials = (name: string) =>
+  name.replace(/[^A-Za-z\s]/g, ' ').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+// Portfolio grid is hidden for now at the client's request. Set to true to show it again.
+const SHOW_PORTFOLIO = false;
+
+const heroImage = conceptProjects.find((p) => p.images.length && p.id !== 'lotus-signature')?.images[0];
+---
+
+<PageLayout
+  title="Projects | Architecture & Interior Design Portfolio by Concept Design, Mangaluru"
+  description="Concept Design is the architecture and interior design studio behind Lotus Signature. Explore ongoing and completed residential apartments, villas, commercial and mixed-use projects across Mangaluru."
+  currentPath="/projects"
+>
+  <PageHero
+    crumb="Projects"
+    logo={{ src: conceptStudio.logo, alt: `${conceptStudio.name} logo`, width: 292, height: 246 }}
+    eyebrow={conceptStudio.name}
+    title="Architecture & Interior Design."
+    lead="The architecture and interior design studio behind Lotus Signature. Explore our residential apartments, villas, commercial and mixed-use work across Mangaluru and the region."
+    facts={[
+      { label: 'Projects in Portfolio', value: String(conceptProjects.length) },
+      { label: 'Ongoing', value: String(ongoing) },
+      { label: 'Completed Villas', value: String(completed) },
+      { label: 'Disciplines', value: 'Architecture & Interiors' },
+    ]}
+    image={heroImage
+      ? { src: heroImage, alt: 'Concept Design architecture project', width: 1600, height: 1000, pos: '50% 50%' }
+      : { src: '/images/hero/hero-exterior.webp', alt: 'Lotus Signature, designed by Concept Design', width: 1720, height: 1450, pos: '0% 30%', zoom: 1.15, origin: '0% 30%' }}
+    nav={[
+      ...(SHOW_PORTFOLIO ? [{ href: '#portfolio', label: 'Portfolio' }] : []),
+      { href: '#pmc', label: 'Project Management' },
+    ]}
+  />
+
+  {/* Portfolio */}
+  {SHOW_PORTFOLIO && (
+  <section class="section tone-paper" id="portfolio">
+    <div class="wrap">
+      <SectionHeading
+        eyebrow="Selected work"
+        title="Architecture Portfolio."
+        description="Contemporary residences, apartment buildings and commercial addresses, from completed homes to projects taking shape today."
+      >
+        <div class="cd-filters">
+          <div class="tabs" role="group" aria-label="Filter by type">
+            <button type="button" class="active" data-cd-cat="all" aria-pressed="true">All ({conceptProjects.length})</button>
+            {conceptCategories.map((c) => (
+              <button type="button" data-cd-cat={c} aria-pressed="false">{c} ({countBy(c)})</button>
+            ))}
+          </div>
+          <div class="tabs" role="group" aria-label="Filter by status">
+            <button type="button" class="active" data-cd-status="all" aria-pressed="true">All</button>
+            <button type="button" data-cd-status="Ongoing" aria-pressed="false">Ongoing</button>
+            <button type="button" data-cd-status="Completed" aria-pressed="false">Completed</button>
+          </div>
+        </div>
+      </SectionHeading>
+
+      <ul class="cd-grid" id="cd-grid">
+        {conceptProjects.map((p) => (
+          <li class="cd-card" data-cat={p.category} data-status={p.status}>
+            <button type="button" class="cd-card__btn" data-cd-open={p.id} aria-haspopup="dialog">
+              <span class="frame cd-card__media">
+                {p.images.length
+                  ? <img src={p.images[0]} alt={`${p.name}${p.location ? ', ' + p.location : ''}`} loading="lazy" decoding="async" />
+                  : <span class="cd-card__tile" aria-hidden="true">{initials(p.name)}</span>}
+                <span class={`cd-card__status ${p.status === 'Completed' ? 'is-done' : ''}`}>{p.status}</span>
+              </span>
+              <span class="cd-card__cat">{p.category}</span>
+              <span class="cd-card__name">{p.name}</span>
+              {p.location && <span class="cd-card__loc">{p.location}</span>}
+              <span class="cd-card__more">View project</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p class="cd-empty" id="cd-empty" hidden>No projects match these filters. Choose “All” to see the full portfolio.</p>
+    </div>
+  </section>
+  )}
+
+  <!-- PMC -->
+  <section class="section tone-mist" id="pmc">
+    <div class="wrap">
+      <SectionHeading
+        eyebrow="Project management consultancy"
+        title="Beyond the Drawing Board."
+        description="Alongside design, Concept Design supports clients through project management consultancy, presenting options and guiding decisions as homes move from concept to construction."
+      />
+      <ul class="pmc">
+        {pmcProjects.map((p) => (
+          <li class="pmc__item">
+            {p.images.length > 0 && (
+              <div class="pmc__images">
+                {p.images.map((src) => (
+                  <div class="frame zoomable" data-lightbox="true" data-lightbox-src={src} data-lightbox-caption={p.name}>
+                    <img src={src} alt={p.name} loading="lazy" decoding="async" />
+                  </div>
+                ))}
+              </div>
+            )}
+            <div class="pmc__text">
+              <h3 class="pmc__name">{p.name}</h3>
+              <p class="muted">{p.note}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTASection
+    eyebrow="Work with Concept Design"
+    title="Planning a Home or Commercial Building?"
+    description="Speak with our team about architecture and interior design for your next residence, apartment building or commercial address."
+    primaryCtaText="Start A Conversation"
+    primaryCtaLink="/contact"
+    secondaryCtaText="View Lotus Signature"
+    secondaryCtaLink="/concept-design"
+  />
+
+  {/* Project detail dialog */}
+  {SHOW_PORTFOLIO && (
+    <>
+  <dialog class="cd-dialog" id="cd-dialog" aria-labelledby="cd-dialog-title">
+    <div class="cd-dialog__inner">
+      <button type="button" class="cd-dialog__close" data-cd-close aria-label="Close project">&times;</button>
+      <div class="cd-dialog__media" id="cd-dialog-media"></div>
+      <div class="cd-dialog__body">
+        <p class="cd-dialog__meta" id="cd-dialog-meta"></p>
+        <h2 class="cd-dialog__title" id="cd-dialog-title"></h2>
+        <p class="cd-dialog__loc" id="cd-dialog-loc"></p>
+        <div class="cd-dialog__desc" id="cd-dialog-desc"></div>
+        <a href="/contact" class="btn">Enquire About This Project</a>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="application/json" id="cd-data" set:html={JSON.stringify(conceptProjects)} />
+    </>
+  )}
+</PageLayout>
+
+<style>
+  .cd-filters { display: grid; gap: 0.75rem; justify-items: start; }
+
+  .cd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem clamp(1.25rem, 2.5vw, 2rem); }
+  .cd-card__btn { display: flex; flex-direction: column; align-items: flex-start; width: 100%; text-align: left; }
+  .cd-card__media { display: block; width: 100%; aspect-ratio: 4 / 3; margin-bottom: 1.1rem; }
+  .cd-card__media img { transition: transform 0.9s var(--ease); }
+  .cd-card__btn:hover .cd-card__media img { transform: scale(1.04); }
+  .cd-card__tile {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 0.04em; color: rgba(34, 37, 43, 0.28);
+    background: linear-gradient(160deg, #f6eef3 0%, #e9dbe4 100%);
+    transition: color 0.4s var(--ease);
+  }
+  .cd-card__btn:hover .cd-card__tile { color: var(--lotus); }
+  .cd-card__status {
+    position: absolute; top: 0.9rem; left: 0.9rem; padding: 0.3rem 0.65rem;
+    font-size: var(--fs-xs); font-weight: 480; background: rgba(255,255,255,0.88); color: var(--lotus); border-radius: 1px;
+  }
+  .cd-card__status.is-done { color: var(--graphite); }
+  .cd-card__cat { font-size: var(--fs-xs); color: var(--slate); }
+  .cd-card__name { font-family: var(--font-display); font-size: 1.4rem; line-height: 1.2; margin: 0.25rem 0 0.15rem; }
+  .cd-card__loc { font-size: var(--fs-sm); color: var(--slate); }
+  .cd-card__more { margin-top: 0.85rem; font-size: var(--fs-sm); font-weight: 480; border-bottom: 1px solid currentColor; padding-bottom: 2px; transition: color 0.2s; }
+  .cd-card__btn:hover .cd-card__more { color: var(--lotus); }
+  .cd-empty { margin-top: 2rem; color: var(--slate); }
+
+  .pmc { display: grid; gap: 2rem; }
+  .pmc__item { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2.5rem; align-items: end; border-top: 1px solid var(--graphite); padding-top: 1.75rem; }
+  .pmc__item:not(:has(.pmc__images)) { grid-template-columns: 1fr; }
+  .pmc__images { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .pmc__images .frame { aspect-ratio: 4 / 3; }
+  .pmc__name { font-size: var(--fs-lg); margin-bottom: 0.5rem; }
+
+  /* Dialog */
+  .cd-dialog { width: min(1100px, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); padding: 0; border: 0; background: var(--paper); color: var(--graphite); box-shadow: 0 40px 100px -30px rgba(34, 37, 43, 0.4); }
+  .cd-dialog::backdrop { background: rgba(250, 250, 248, 0.88); backdrop-filter: blur(6px); }
+  .cd-dialog[open] { animation: cd-in 0.45s var(--ease); }
+  @keyframes cd-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .cd-dialog__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); max-height: calc(100dvh - 2rem); }
+  .cd-dialog__close { position: absolute; z-index: 2; top: 0.9rem; right: 0.9rem; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: #fff; border: 1px solid var(--rule-strong); font-size: 1.5rem; line-height: 1; }
+  .cd-dialog__close:hover { border-color: var(--graphite); }
+  .cd-dialog__media { background: var(--mist); overflow-y: auto; display: grid; gap: 2px; }
+  .cd-dialog__media :global(img) { width: 100%; height: auto; display: block; }
+  .cd-dialog__media :global(.cd-dialog__tile) { min-height: 360px; height: 100%; display: grid; place-items: center; font-family: var(--font-display); font-size: 5rem; color: rgba(34,37,43,0.25); background: linear-gradient(160deg, #f6eef3 0%, #e9dbe4 100%); }
+  .cd-dialog__body { padding: clamp(1.75rem, 4vw, 3rem); overflow-y: auto; }
+  .cd-dialog__meta { font-size: var(--fs-xs); color: var(--lotus); font-weight: 480; margin-bottom: 0.75rem; }
+  .cd-dialog__title { font-size: var(--fs-lg); padding-right: 2.5rem; }
+  .cd-dialog__loc { color: var(--slate); margin: 0.35rem 0 1.5rem; }
+  .cd-dialog__desc :global(p) { font-size: var(--fs-sm); color: var(--slate); }
+  .cd-dialog__desc { margin-bottom: 2rem; }
+
+  @media (max-width: 1024px) { .cd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 860px) {
+    .cd-filters, .cd-filters .tabs { width: 100%; }
+    .pmc__item { grid-template-columns: 1fr; }
+    .cd-dialog__inner { grid-template-columns: 1fr; overflow-y: auto; }
+    .cd-dialog__media, .cd-dialog__body { overflow: visible; }
+    .cd-dialog__media :global(.cd-dialog__tile) { min-height: 220px; }
+  }
+  @media (max-width: 560px) {
+    .cd-grid { grid-template-columns: 1fr; }
+    .cd-dialog { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; margin: 0; }
+    .cd-dialog__inner { max-height: 100dvh; }
+  }
+</style>
+
+<script>
+  type P = { id: string; name: string; location?: string; category: string; status: string; description: string[]; images: string[] };
+  const dataEl = document.getElementById('cd-data');
+  if (dataEl) {
+  const data: P[] = JSON.parse(dataEl.textContent || '[]');
+  const cards = document.querySelectorAll<HTMLElement>('.cd-card');
+  const empty = document.getElementById('cd-empty')!;
+  let cat = 'all', status = 'all';
+
+  const apply = () => {
+    let shown = 0;
+    cards.forEach((c) => {
+      const ok = (cat === 'all' || c.dataset.cat === cat) && (status === 'all' || c.dataset.status === status);
+      c.hidden = !ok; if (ok) shown++;
+    });
+    empty.hidden = shown > 0;
+  };
+  const bind = (attr: string, set: (v: string) => void) => {
+    const btns = document.querySelectorAll<HTMLButtonElement>(`[${attr}]`);
+    btns.forEach((b) => b.addEventListener('click', () => {
+      btns.forEach((x) => { x.classList.toggle('active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+      set(b.getAttribute(attr) || 'all'); apply();
+    }));
+  };
+  bind('data-cd-cat', (v) => (cat = v));
+  bind('data-cd-status', (v) => (status = v));
+
+  const dialog = document.getElementById('cd-dialog') as HTMLDialogElement;
+  const $ = (id: string) => document.getElementById(id)!;
+  const initials = (n: string) => n.replace(/[^A-Za-z\s]/g, ' ').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+  let opener: HTMLElement | null = null;
+
+  document.querySelectorAll<HTMLButtonElement>('[data-cd-open]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const p = data.find((x) => x.id === btn.dataset.cdOpen); if (!p) return;
+      opener = btn;
+      $('cd-dialog-meta').textContent = `${p.category}, ${p.status}`;
+      $('cd-dialog-title').textContent = p.name;
+      $('cd-dialog-loc').textContent = p.location || '';
+      $('cd-dialog-desc').replaceChildren(...p.description.map((t) => { const el = document.createElement('p'); el.textContent = t; return el; }));
+      const media = $('cd-dialog-media');
+      if (p.images.length) {
+        media.replaceChildren(...p.images.map((src) => { const im = document.createElement('img'); im.src = src; im.alt = p.name; im.loading = 'lazy'; return im; }));
+      } else {
+        const t = document.createElement('div'); t.className = 'cd-dialog__tile'; t.textContent = initials(p.name); media.replaceChildren(t);
+      }
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  const close = () => dialog.close();
+  dialog.querySelector('[data-cd-close]')!.addEventListener('click', close);
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+  dialog.addEventListener('close', () => { document.body.style.overflow = ''; opener?.focus(); });
+  }
+</script>

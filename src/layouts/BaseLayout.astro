@@ -1,0 +1,132 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  currentPath?: string;
+  schemaType?: string;
+}
+
+const {
+  title = "Lotus Signature | Premium Residential Apartments in Bendoorwell, Mangaluru",
+  description = "22 exclusive 2 & 3 BHK residences in Bendoorwell, Mangaluru by Signature Properties. Featuring 1034 to 1718 sq. ft. saleable areas, automated elevator, gym, indoor games, reticulated gas, and soundproof generator backup.",
+  image = "/images/hero/hero-exterior.webp",
+  currentPath = "/",
+  schemaType = "ApartmentComplex",
+} = Astro.props;
+
+const canonicalURL = new URL(currentPath, Astro.site || "https://lotussignature.com");
+const ogImageURL = new URL(image, Astro.site || "https://lotussignature.com");
+
+// Real Estate Structured Data (JSON-LD)
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": schemaType,
+  "name": "Lotus Signature",
+  "alternateName": "Lotus Signature Residences",
+  "description": description,
+  "url": canonicalURL.href,
+  "image": ogImageURL.href,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bendoorwell",
+    "addressLocality": "Mangaluru",
+    "addressRegion": "Karnataka",
+    "postalCode": "575003",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 12.8687,
+    "longitude": 74.8560
+  },
+  "numberOfAccommodationUnits": 22,
+  "numberOfBedrooms": "2 to 3 BHK",
+  "floorSize": {
+    "@type": "QuantitativeValue",
+    "minValue": 1034,
+    "maxValue": 1718,
+    "unitCode": "FTK"
+  },
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Automated Elevator (8-Passenger)" },
+    { "@type": "LocationFeatureSpecification", "name": "Gymnasium" },
+    { "@type": "LocationFeatureSpecification", "name": "Indoor Games Room" },
+    { "@type": "LocationFeatureSpecification", "name": "Reticulated Piped Gas" },
+    { "@type": "LocationFeatureSpecification", "name": "Covered Basement Car Parking" },
+    { "@type": "LocationFeatureSpecification", "name": "24/7 CCTV Surveillance" },
+    { "@type": "LocationFeatureSpecification", "name": "Soundproof Generator Backup" },
+    { "@type": "LocationFeatureSpecification", "name": "Rainwater Harvesting" }
+  ],
+  "parentOrganization": {
+    "@type": "Organization",
+    "name": "Signature Properties",
+    "logo": "https://lotussignature.com/images/branding/signature-properties-logo.png"
+  }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#fafaf8" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImageURL} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <slot />
+
+    <!-- Lightbox Modal Container for high-res previews -->
+    <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Image Preview">
+      <div class="lightbox-content">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close preview">&times;</button>
+        <img src="" alt="" class="lightbox-img" id="lightbox-img" />
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+      </div>
+    </div>
+
+
+    <!-- Client-side initialization scripts -->
+    <script>
+      import { initNavigation } from '../scripts/navigation';
+      import { initGallery } from '../scripts/gallery';
+
+      document.addEventListener('DOMContentLoaded', () => {
+        initNavigation();
+        initGallery();
+      });
+    </script>
+  </body>
+</html>

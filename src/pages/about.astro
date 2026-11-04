@@ -1,0 +1,211 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import CTASection from '../components/ui/CTASection.astro';
+import { projectData } from '../data/project';
+
+const promoter = projectData.promoter;
+
+const principles = [
+  {
+    title: 'Structural Superiority',
+    text: 'Robust RCC framed superstructure designed to withstand coastal weather factors, paired with deep subterranean foundation footings and waterproof basement design.',
+  },
+  {
+    title: 'Finishing Artistry',
+    text: 'Melamine-polished decorative veneer entrance doors, putty-smoothed ceilings, premium vitrified tiles, and Jaguar bathroom fittings selected for enduring elegance.',
+  },
+  {
+    title: 'Utility Reliability',
+    text: 'Continuous dual water supply with borewell and corporation water, rainwater harvesting, reticulated gas line distribution, and soundproof generator power backup.',
+  },
+];
+---
+
+<PageLayout
+  title="About Signature Properties | Lotus Signature, Bendoorwell, Mangaluru"
+  description="Learn about Signature Properties, promoters of Lotus Signature in Bendoorwell, Mangaluru: contemporary 2 & 3 BHK residences built around thoughtful planning, natural light and everyday convenience."
+  currentPath="/about"
+>
+  <PageHero
+    crumb="About"
+    eyebrow="Signature Properties, Bendoorwell, Mangaluru"
+    title="Contemporary Living. Thoughtfully Designed."
+    lead="Signature Properties brings together contemporary architecture, elegant aesthetics and comfortable urban living, with homes planned around practical space, natural light and ventilation."
+    facts={[
+      { label: 'Apartment Choices', value: '2 & 3 BHK' },
+      { label: 'Residential Floors', value: 'Five' },
+      { label: 'Signature Address', value: 'Bendoorwell' },
+    ]}
+    image={{ src: '/images/exterior/exterior-dusk.webp', alt: 'Lotus Signature Architectural Exterior by Signature Properties', width: 1480, height: 1400, pos: '50% 22%' }}
+    caption={[
+      { label: 'Promoter', value: 'Signature Properties' },
+      { label: 'Signature Enclave', value: 'Lotus Signature, Bendoorwell' },
+    ]}
+    nav={[
+      { href: '#promoter', label: 'Promoter Profile' },
+      { href: '#quality', label: 'Quality Creed' },
+      { href: '#vision', label: 'The Vision' },
+      { href: '#philosophy', label: 'Philosophy' },
+      { href: '#comfort', label: 'Comfort' },
+    ]}
+  />
+
+  <!-- Promoter -->
+  <section class="section tone-paper" id="promoter">
+    <div class="wrap">
+      <SectionHeading
+        eyebrow="Promoter profile"
+        title="About Signature Properties."
+        description="A home is an investment in your family’s comfort, security, and future. Our vision is to create residential spaces that bring together thoughtful planning, contemporary design, and everyday convenience."
+      />
+      <div class="grid-12 promoter">
+        <div class="promoter__text">
+          <p>
+            Located in the well-connected locality of Bendoorwell, Mangaluru, our residential apartment project is designed to offer residents a balance of convenience, functionality, and modern lifestyle.
+          </p>
+          <p class="muted">
+            Featuring a selection of spacious 2 BHK and 3 BHK apartments across five residential floors, our homes emphasise practical space planning, natural light, ventilation, and an inviting residential environment. Clean architectural lines, elegant balconies, refined finishes and warm wood-finish ceiling details give the façade its contemporary character.
+          </p>
+        </div>
+        <aside class="promoter__card">
+          <img src={promoter.logo} alt={`${promoter.name} logo`} width="226" height="226" />
+          <div>
+            <h3 class="promoter__name">{promoter.name}</h3>
+            <p class="promoter__motto">Modern Homes. Timeless Comfort. A Signature Lifestyle.</p>
+            {promoter.address.full && <p class="promoter__addr">{promoter.address.full}</p>}
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quality -->
+  <section class="section tone-white" id="quality">
+    <div class="wrap">
+      <SectionHeading
+        eyebrow="Uncompromising standards"
+        title="Our Approach to Quality."
+        description="Quality at Signature Properties is not an afterthought—it is engineered into every column, conduit, tile joint, and door frame."
+      />
+      <ul class="principles">
+        {principles.map((p) => (
+          <li>
+            <h3 class="principles__title">{p.title}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Vision -->
+  <section class="section tone-paper" id="vision">
+    <div class="wrap grid-12 split">
+      <figure class="split__media">
+        <div
+          class="frame zoomable"
+          style="aspect-ratio: 16 / 10"
+          data-lightbox="true"
+          data-lightbox-src="/images/interiors/living-room.webp"
+          data-lightbox-caption="Living Room Vision at Lotus Signature"
+        >
+          <img src="/images/interiors/living-room.webp" alt="Living Room Vision at Lotus Signature" width="1950" height="420" loading="lazy" decoding="async" style="--pos:30% 0%;--zoom:1.3;--origin:55% 0%" />
+        </div>
+      </figure>
+      <div class="split__text">
+        <p class="kicker">The vision</p>
+        <h2 class="title">“An Address That Reflects Your Signature.”</h2>
+        <p class="lead split__lead">
+          Lotus Signature was envisioned as an exclusive boutique apartment community—offering just 22 private residences for families who seek tranquility without moving away from the heart of the city.
+        </p>
+        <p class="muted">
+          By restricting the density to only 4 residences per floor across 4 upper levels, each homeowner enjoys corner ventilation, optimal acoustic isolation from neighbours, and direct elevator connectivity to their basement parking.
+        </p>
+        <a href="/concept-design" class="btn split__btn">Discover The Project</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="section tone-mist" id="philosophy">
+    <div class="wrap grid-12 split split--reverse">
+      <div class="split__text">
+        <p class="kicker">Design philosophy</p>
+        <h2 class="title">Harmonising Light, Air &amp; Proportion.</h2>
+        <p class="split__lead">
+          The building elevation combines contemporary cubist forms with coastal tropical sensitivity. Deep recessed balconies protect interior spaces from harsh monsoon rains and direct afternoon glare, while inviting the refreshing coastal sea breeze.
+        </p>
+        <p class="muted">
+          Natural granite and vitrified tile flooring in common circulation lobbies create an uncluttered, architectural gallery experience upon arrival.
+        </p>
+        <dl class="facts split__facts" style="--cols:2">
+          <div><dt>Ventilation</dt><dd>Multi-Aspect Cross Breezes</dd></div>
+          <div><dt>Aesthetics</dt><dd>Warm Wood &amp; Glass Accents</dd></div>
+        </dl>
+      </div>
+      <figure class="split__media">
+        <div
+          class="frame zoomable"
+          style="aspect-ratio: 4 / 4.2; background:#dfe7f1"
+          data-lightbox="true"
+          data-lightbox-src="/images/exterior/building-day.webp"
+          data-lightbox-caption="Lotus Signature - Front Elevation Architectural Concept"
+        >
+          <img src="/images/exterior/building-day.webp" alt="Architecture & Design Philosophy - Lotus Signature" width="730" height="650" loading="lazy" decoding="async" />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <div id="comfort">
+    <CTASection
+      eyebrow="Ready to discover more"
+      title="Experience The Residences Firsthand."
+      description="Explore our apartment configurations, interactive floor plans, or speak with our sales advisors for bespoke residence consultations."
+      primaryCtaText="Explore Residences"
+      primaryCtaLink="/concept-design"
+      secondaryCtaText="Contact Sales Team"
+      secondaryCtaLink="/contact"
+      />
+  </div>
+</PageLayout>
+
+<style>
+  .promoter { row-gap: 2.5rem; }
+  .promoter__text { grid-column: 4 / span 5; font-size: var(--fs-md); font-weight: 340; }
+  .promoter__card {
+    grid-column: 10 / span 3; align-self: start;
+    display: grid; gap: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
+  }
+  .promoter__card img { width: 96px; height: auto; }
+  .promoter__name { font-size: 1.35rem; }
+  .promoter__motto { font-style: italic; color: var(--lotus); margin: 0.2rem 0 0.75rem; }
+  .promoter__addr { font-size: var(--fs-sm); color: var(--slate); }
+
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--graphite); }
+  .principles li { padding: 2rem 2rem 0 0; }
+  .principles li + li { padding-left: 2rem; border-left: 1px solid var(--rule); }
+  .principles__title { font-size: var(--fs-lg); margin-bottom: 1rem; }
+  .principles p { color: var(--slate); font-size: var(--fs-sm); }
+
+  .split { row-gap: 2.5rem; align-items: center; }
+  .split__media { grid-column: 1 / span 6; }
+  .split__text { grid-column: 8 / span 5; }
+  .split--reverse .split__text { grid-column: 1 / span 5; }
+  .split--reverse .split__media { grid-column: 7 / span 6; }
+  .split .title { margin-bottom: 1.5rem; }
+  .split__lead { font-size: var(--fs-md); font-weight: 340; }
+  .split__btn { margin-top: 1.25rem; }
+  .split__facts { margin-top: 2rem; }
+
+  @media (max-width: 960px) {
+    .promoter__text, .promoter__card, .split__media, .split__text,
+    .split--reverse .split__text, .split--reverse .split__media { grid-column: 1 / -1; }
+    .split--reverse .split__media { order: -1; }
+    .principles { grid-template-columns: 1fr; }
+    .principles li + li { padding-left: 0; border-left: 0; }
+    .principles li { padding-bottom: 2rem; border-bottom: 1px solid var(--rule); }
+  }
+</style>

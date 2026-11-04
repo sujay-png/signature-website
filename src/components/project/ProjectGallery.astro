@@ -1,0 +1,65 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const exteriorImages = [
+  {
+    src: '/images/exterior/exterior-dusk-full.webp',
+    alt: 'Lotus Signature - Architectural Facade & Ambient Illumination at Dusk',
+    caption: 'Lotus Signature - Full Architectural Dusk Render with Warm Interior Light and Landscape',
+    w: 2380, h: 1680, cls: 'g-a', style: '--pos:0% 40%;--zoom:1.5;--origin:0% 30%',
+  },
+  {
+    src: '/images/exterior/building-day.webp',
+    alt: 'Lotus Signature - Front Elevation with Modern Fenestration',
+    caption: 'Lotus Signature - Contemporary Linear Elevation and Balcony Details',
+    w: 730, h: 650, cls: 'g-b', style: '--pos:45% 40%',
+  },
+  {
+    src: '/images/hero/hero-building.webp',
+    alt: 'Lotus Signature - Perspective View with Melamine Wood Finishes',
+    caption: 'Lotus Signature - Perspective Architectural Angle Highlighting Balcony Cantilevers',
+    w: 830, h: 800, cls: 'g-c', style: '--pos:50% 30%',
+  },
+  {
+    src: '/images/exterior/exterior-dusk.webp',
+    alt: 'Lotus Signature - Ground Level Entrance Portico & Parking Access',
+    caption: 'Lotus Signature - Arrival Driveway and Secure Landscaped Portico',
+    w: 1480, h: 1400, cls: 'g-d', style: '--pos:50% 85%',
+  },
+];
+---
+
+<section class="section tone-white" id="exterior-gallery">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="Exterior architecture"
+      title="The Architectural Gallery."
+      description="Examine the exterior craftsmanship of Lotus Signature, from its striking multi-tiered balconies and wood-accented soffits to its welcoming ground-level arrival."
+    />
+
+    <div class="gallery">
+      {exteriorImages.map((img) => (
+        <figure class={img.cls}>
+          <div class="frame zoomable" data-lightbox="true" data-lightbox-src={img.src} data-lightbox-caption={img.caption}>
+            <img src={img.src} alt={img.alt} width={img.w} height={img.h} loading="lazy" decoding="async" style={img.style} />
+          </div>
+          <figcaption>{img.alt.replace('Lotus Signature - ', '')}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(1rem, 2vw, 1.75rem); }
+  .gallery figure { display: flex; flex-direction: column; }
+  .gallery .frame { flex: 1; }
+  .g-a { grid-column: span 8; } .g-a .frame { aspect-ratio: 16 / 10; }
+  .g-b { grid-column: span 4; } .g-b .frame { background: #dfe7f1; }
+  .g-c { grid-column: span 5; } .g-c .frame { aspect-ratio: 1 / 1; background: #e5ebf2; }
+  .g-d { grid-column: span 7; } .g-d .frame { aspect-ratio: 7 / 5.3; }
+  @media (max-width: 860px) {
+    .gallery figure { grid-column: 1 / -1; }
+    .g-b .frame { aspect-ratio: 4 / 3; }
+  }
+</style>

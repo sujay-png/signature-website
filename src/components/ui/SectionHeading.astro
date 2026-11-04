@@ -1,0 +1,25 @@
+---
+/**
+ * Section heading set as a margin label + title column.
+ * `eyebrow` is the short descriptor shown in the left margin.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  class?: string;
+  as?: 'h1' | 'h2';
+}
+
+const { eyebrow, title, description, class: className = '', as: Tag = 'h2' } = Astro.props;
+const hasAside = Astro.slots.has('default');
+---
+
+<div class={`sec-head grid-12 ${className}`}>
+  {eyebrow && <p class="sec-head__label">{eyebrow}</p>}
+  <div class="sec-head__body">
+    <Tag class="sec-head__title">{title}</Tag>
+    {description && <p class="sec-head__desc">{description}</p>}
+  </div>
+  {hasAside && <div class="sec-head__aside"><slot /></div>}
+</div>

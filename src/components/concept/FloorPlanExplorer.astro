@@ -1,0 +1,82 @@
+---
+import { floorPlanData } from '../../data/floorPlans';
+import FloorPlanViewer from './FloorPlanViewer.astro';
+
+const defaultLevel = floorPlanData.find((l) => l.id === 'typical-floors') || floorPlanData[0];
+const area = (v: number | string) => (typeof v === 'number' ? `${v} sq. ft.` : v);
+---
+
+<div class="explorer" id="explorer">
+  <div class="explorer__bar">
+    <h3 class="explorer__title">Floor Plans &amp; Technical Layouts</h3>
+    <div class="tabs" role="tablist" aria-label="Floor levels">
+      {floorPlanData.map((level) => (
+        <button
+          type="button"
+          role="tab"
+          data-level-tab={level.id}
+          class={level.id === defaultLevel.id ? 'active' : ''}
+          aria-selected={level.id === defaultLevel.id ? 'true' : 'false'}
+        >
+          {level.label}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="explorer__grid">
+    <div class="explorer__units">
+      <p class="explorer__hint">Select a residence or layout</p>
+      <div class="units-selector-col" aria-label="Units">
+        {defaultLevel.units.map((unit, idx) => (
+          <button type="button" class={`unit-option ${idx === 0 ? 'active' : ''}`} data-unit-id={unit.id} aria-pressed={idx === 0 ? 'true' : 'false'}>
+            <span class="unit-option__name">{unit.unitNo}</span>
+            <span class="unit-option__type">{unit.type}</span>
+            <span class="unit-option__area">{area(unit.saleableAreaSqFt)}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <FloorPlanViewer
+      initialImage={defaultLevel.units[0].image}
+      initialAlt={`${defaultLevel.units[0].unitNo} - ${defaultLevel.units[0].type} Floor Plan Technical Drawing`}
+    />
+  </div>
+</div>
+
+<style>
+  .explorer { background: #fff; border: 1px solid var(--rule); }
+  .explorer__bar {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem 2rem;
+    padding: 1.25rem clamp(1.25rem, 3vw, 2rem); border-bottom: 1px solid var(--rule);
+  }
+  .explorer__title { font-size: 1.35rem; }
+  .explorer__grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); }
+  .explorer__units { border-right: 1px solid var(--rule); padding: 1.5rem 0; }
+  .explorer__hint { font-size: var(--fs-xs); color: var(--slate); padding: 0 1.5rem 0.75rem; margin: 0; }
+
+  :global(.unit-option) {
+    width: 100%; text-align: left; display: grid; grid-template-columns: 1fr auto; column-gap: 1rem; row-gap: 0.1rem;
+    padding: 1rem 1.5rem; border-left: 2px solid transparent; transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  :global(.unit-option:hover) { background: var(--mist); }
+  :global(.unit-option.active) { background: var(--mist); border-left-color: var(--lotus); }
+  :global(.unit-option__name) { font-size: 1.05rem; font-weight: 450; }
+  :global(.unit-option__type) { font-size: var(--fs-xs); color: var(--lotus); align-self: center; justify-self: end; }
+  :global(.unit-option__area) { grid-column: 1 / -1; font-size: var(--fs-xs); color: var(--slate); }
+
+  @media (max-width: 960px) {
+    .explorer__grid { grid-template-columns: minmax(0, 1fr); }
+    .explorer__units { border-right: 0; border-bottom: 1px solid var(--rule); padding: 1rem 0; }
+    .units-selector-col { display: flex; overflow-x: auto; gap: 0.5rem; padding: 0 1rem; scroll-snap-type: x mandatory; }
+    :global(.unit-option) { flex: 0 0 auto; width: auto; min-width: 170px; border: 1px solid var(--rule); border-left-width: 1px; scroll-snap-align: start; padding: 0.8rem 1rem; }
+    :global(.unit-option.active) { border-color: var(--lotus); }
+    .explorer__hint { padding: 0 1rem 0.75rem; }
+  }
+</style>
+
+<script>
+  import { initFloorPlanExplorer } from '../../scripts/floor-plan';
+  initFloorPlanExplorer();
+</script>

@@ -1,0 +1,105 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { amenitiesData } from '../../data/amenities';
+
+const items = amenitiesData.slice(0, 6);
+---
+
+<section class="section tone-mist amenities" id="amenities">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="Comfort & lifestyle"
+      title="Thoughtfully Curated Amenities."
+      description="Every essential amenity is purposefully integrated to elevate your daily routine without exorbitant maintenance burdens."
+    />
+
+    <div class="amenities__layout" data-amenities>
+      <div class="amenities__stage">
+        {items.map((a, i) => (
+          <div
+            class={`frame zoomable amenities__img ${i === 0 ? 'is-active' : ''}`}
+            data-amenity-img={a.id}
+            data-lightbox="true"
+            data-lightbox-src={a.image}
+            data-lightbox-caption={`Lotus Signature - ${a.title}`}
+            aria-hidden={i === 0 ? 'false' : 'true'}
+          >
+            <img src={a.image} alt={a.title} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+          </div>
+        ))}
+      </div>
+
+      <ul class="amenities__list">
+        {items.map((a, i) => (
+          <li class={`amenity ${i === 0 ? 'is-active' : ''}`} data-amenity={a.id}>
+            <button type="button" class="amenity__head" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`amenity-${a.id}`}>
+              <span class="amenity__title">{a.title}</span>
+              <span class="amenity__meta">{a.category}</span>
+            </button>
+            <div class="amenity__panel" id={`amenity-${a.id}`}>
+              <div class="amenity__panel-inner">
+                <img class="amenity__thumb" src={a.image} alt="" loading="lazy" decoding="async" />
+                <p class="amenity__summary">{a.summary}</p>
+                <p class="amenity__details">{a.details}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .amenities__layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .amenities__stage { position: sticky; top: calc(var(--header-h) + 2rem); aspect-ratio: 4 / 3.2; }
+  .amenities__img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s var(--ease); }
+  .amenities__img.is-active { opacity: 1; z-index: 1; }
+
+  .amenities__list { border-top: 1px solid var(--rule-strong); }
+  .amenity { border-bottom: 1px solid var(--rule-strong); }
+  .amenity__head { width: 100%; text-align: left; padding: 1.4rem 0; display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .amenity__title { font-family: var(--font-display); font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.75rem); line-height: 1.2; color: var(--slate); transition: color 0.25s var(--ease); }
+  .amenity__meta { font-size: var(--fs-xs); color: var(--slate); text-align: right; flex: none; max-width: 45%; }
+  .amenity__head:hover .amenity__title, .amenity.is-active .amenity__title { color: var(--graphite); }
+  .amenity.is-active .amenity__meta { color: var(--lotus); }
+
+  .amenity__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s var(--ease); }
+  .amenity.is-active .amenity__panel { grid-template-rows: 1fr; }
+  .amenity__panel-inner { overflow: hidden; }
+  .amenity__summary { color: var(--graphite); margin-bottom: 0.6rem; }
+  .amenity__details { font-size: var(--fs-sm); color: var(--slate); padding-bottom: 1.5rem; }
+  .amenity__thumb { display: none; }
+
+  @media (max-width: 860px) {
+    .amenities__layout { grid-template-columns: 1fr; }
+    .amenities__stage { display: none; }
+    .amenity__thumb { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; margin-bottom: 1.25rem; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-amenities]').forEach((root) => {
+    const rows = root.querySelectorAll<HTMLElement>('[data-amenity]');
+    const imgs = root.querySelectorAll<HTMLElement>('[data-amenity-img]');
+    const select = (id: string) => {
+      rows.forEach((r) => {
+        const on = r.dataset.amenity === id;
+        r.classList.toggle('is-active', on);
+        r.querySelector('button')?.setAttribute('aria-expanded', String(on));
+      });
+      imgs.forEach((im) => {
+        const on = im.dataset.amenityImg === id;
+        im.classList.toggle('is-active', on);
+        im.setAttribute('aria-hidden', String(!on));
+      });
+    };
+    rows.forEach((r) => {
+      const btn = r.querySelector('button');
+      btn?.addEventListener('click', () => select(r.dataset.amenity!));
+      if (window.matchMedia('(hover: hover)').matches) {
+        btn?.addEventListener('mouseenter', () => select(r.dataset.amenity!));
+      }
+    });
+  });
+</script>

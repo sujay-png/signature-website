@@ -1,0 +1,51 @@
+---
+import { projectData } from '../../data/project';
+---
+
+<section class="section tone-paper intro" id="introduction">
+  <div class="wrap grid-12 intro__grid">
+    <figure class="intro__figure">
+      <div class="frame">
+        <img
+          src="/images/exterior/building-day.webp"
+          alt="Lotus Signature Architectural Elevation by Signature Properties"
+          width="730"
+          height="650"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </figure>
+
+    <div class="intro__body">
+      <p class="kicker">The art of residential living</p>
+      <h2 class="intro__title">“A Distinctive Expression of Modern Living.”</h2>
+      <p class="intro__lead">{projectData.overviewText}</p>
+      <p class="muted">
+        Conceived for discerning homeowners who value both connectivity and understated seclusion, Lotus Signature combines Ground + 4 residential levels with dedicated basement parking and generous open balconies.
+      </p>
+      <dl class="facts intro__facts" style="--cols:3">
+        <div><dt>Total Units</dt><dd>22<small>Limited edition residences</small></dd></div>
+        <div><dt>Configuration</dt><dd>2 &amp; 3 BHK<small>1034 to 1718 sq. ft.</small></dd></div>
+        <div><dt>Setting</dt><dd>Bendoorwell<small>Prime Mangaluru</small></dd></div>
+      </dl>
+      <a href="/concept-design" class="link">Discover Lotus Signature</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro__grid { row-gap: 3rem; align-items: center; }
+  .intro__figure { grid-column: 1 / span 5; }
+  .intro__figure .frame { aspect-ratio: 4 / 5; background: #dfe7f1; }
+  .intro__figure img { --pos: 45% 40%; }
+  .intro__body { grid-column: 7 / span 6; }
+  .intro__title { font-size: var(--fs-xl); line-height: 1.08; margin-bottom: 2rem; }
+  .intro__lead { font-family: var(--font-display); font-size: clamp(1.15rem, 1rem + 0.5vw, 1.4rem); line-height: 1.55; color: var(--graphite); margin-bottom: 1.5rem; }
+  .intro__facts { margin: 2.25rem 0 2.5rem; }
+
+  @media (max-width: 960px) {
+    .intro__figure, .intro__body { grid-column: 1 / -1; }
+    .intro__figure .frame { aspect-ratio: 4 / 3; }
+  }
+</style>

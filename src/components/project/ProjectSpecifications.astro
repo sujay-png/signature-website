@@ -1,0 +1,48 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { specificationsData } from '../../data/specifications';
+---
+
+<section class="section tone-paper" id="specifications">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="Technical excellence"
+      title="Detailed Project Specifications."
+      description="Every component and building system is selected for enduring performance in Mangaluru's coastal environment, supported by trusted brand partners."
+    />
+
+    <div class="specs">
+      {specificationsData.map((cat) => (
+        <section class="specs__group grid-12">
+          <header class="specs__head">
+            <h3 class="specs__cat">{cat.category}</h3>
+            <p class="specs__tag">{cat.tagline}</p>
+          </header>
+          <dl class="specs__list">
+            {cat.items.map((item) => (
+              <div>
+                <dt>{item.title}</dt>
+                <dd>{item.description}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .specs { border-top: 1px solid var(--graphite); }
+  .specs__group { padding-block: 2rem; border-bottom: 1px solid var(--rule); row-gap: 1rem; }
+  .specs__head { grid-column: 1 / span 4; }
+  .specs__cat { font-size: 1.45rem; }
+  .specs__tag { font-size: var(--fs-sm); color: var(--slate); margin-top: 0.4rem; }
+  .specs__list { grid-column: 6 / span 7; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2.5rem; }
+  .specs__list dt { font-weight: 480; font-size: var(--fs-sm); margin-bottom: 0.3rem; }
+  .specs__list dd { font-size: var(--fs-sm); color: var(--slate); line-height: 1.6; }
+  @media (max-width: 960px) {
+    .specs__head, .specs__list { grid-column: 1 / -1; }
+  }
+  @media (max-width: 600px) { .specs__list { grid-template-columns: 1fr; } }
+</style>

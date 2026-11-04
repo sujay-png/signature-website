@@ -1,0 +1,65 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const interiorSpaces = [
+  {
+    title: 'Expansive Living Salon',
+    description: 'Generous ceiling heights with putty-finished smooth surfaces, large format vitrified tiles, and expansive sliding aluminium fenestration opening directly onto breezy balconies.',
+    image: '/images/interiors/living-room.webp',
+    w: 1950, h: 420, style: '--pos:30% 0%;--zoom:1.3;--origin:55% 0%',
+    specs: 'Melamine polished main door entrance & vitrified flooring',
+  },
+  {
+    title: 'Master Bedroom Suite',
+    description: 'A private peaceful sanctuary with dedicated ensuite bathroom featuring digital tiles up to ceiling height, Jaguar CP fittings, and tranquil natural lighting.',
+    image: '/images/interiors/master-bedroom.webp',
+    w: 1100, h: 640, style: '--pos:0% 20%',
+    specs: 'Painted flush doors & anti-skid ceramic bathroom floors',
+  },
+  {
+    title: 'Contemporary Kitchen & Dining',
+    description: 'Polished natural granite countertop paired with a stainless steel sink, reticulated piped gas supply, dedicated utility balcony, and dual water supply.',
+    image: '/images/interiors/modular-kitchen.webp',
+    w: 1100, h: 720, style: '--pos:100% 100%;--zoom:1.22;--origin:100% 100%',
+    specs: 'Granite counter, stainless sink & reticulated gas line',
+  },
+];
+---
+
+<section class="section tone-mist" id="interiors">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="Interior proportions"
+      title="Crafted Living Spaces."
+      description="Step inside residences conceptualised to maximise cross-ventilation, abundant coastal daylight, and durable high-specification materials throughout."
+    />
+
+    <div class="interiors">
+      {interiorSpaces.map((s) => (
+        <article class="interior">
+          <div
+            class="frame zoomable interior__media"
+            data-lightbox="true"
+            data-lightbox-src={s.image}
+            data-lightbox-caption={`Lotus Signature - ${s.title}`}
+          >
+            <img src={s.image} alt={s.title} width={s.w} height={s.h} loading="lazy" decoding="async" style={s.style} />
+          </div>
+          <h3 class="interior__title">{s.title}</h3>
+          <p class="muted small">{s.description}</p>
+          <p class="interior__spec"><span>Specification</span>{s.specs}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .interiors { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .interior { display: flex; flex-direction: column; }
+  .interior__media { aspect-ratio: 4 / 3; margin-bottom: 1.5rem; }
+  .interior__title { font-size: 1.4rem; margin-bottom: 0.75rem; }
+  .interior__spec { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--rule-strong); font-size: var(--fs-sm); }
+  .interior__spec span { display: block; font-size: var(--fs-xs); color: var(--slate); }
+  @media (max-width: 960px) { .interiors { grid-template-columns: 1fr; } .interior__media { aspect-ratio: 16 / 10; } }
+</style>

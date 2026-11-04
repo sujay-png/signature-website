@@ -1,0 +1,59 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const highlights = [
+  { num: '22', label: 'Residential Apartments', description: 'An intimate enclave of boutique residences crafted for privacy and community.' },
+  { num: '2 & 3', label: 'BHK Residences', description: 'Six curated saleable configurations spanning 1034 to 1718 sq. ft.' },
+  { num: 'G+4', label: 'Floors', description: 'Low-density vertical living with only 4 spacious residences on typical floors.' },
+  { num: 'B-1', label: 'Basement Parking', description: 'Dedicated subterranean and surface parking bays with clear circulation.' },
+  { num: '8', label: 'Passenger Lift', description: 'Fully automated elevator with emergency ARD system connecting all levels.' },
+];
+---
+
+<section class="section tone-mist highlights" id="highlights">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="Distinctive specifications"
+      title="Key Project Highlights."
+      description="Engineered with uncompromising precision to deliver effortless everyday convenience, comfort, and safety."
+    />
+
+    <ul class="highlights__row">
+      {highlights.map((item) => (
+        <li class="highlights__item">
+          <span class="highlights__num">{item.num}</span>
+          <span class="highlights__label">{item.label}</span>
+          <p class="highlights__desc">{item.description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .highlights__row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--rule-strong); }
+  .highlights__item { padding: 2rem 1.5rem 0 0; }
+  .highlights__item + .highlights__item { padding-left: 1.5rem; border-left: 1px solid var(--rule-strong); }
+  .highlights__num {
+    display: block; font-family: var(--font-display); font-size: clamp(3.2rem, 2rem + 3.6vw, 6rem); line-height: 1; letter-spacing: -0.03em;
+    color: transparent; -webkit-text-stroke: 1px var(--graphite);
+    background: linear-gradient(90deg, var(--lotus) 0 50%, transparent 50% 100%) 100% 0 / 200% 100% no-repeat;
+    -webkit-background-clip: text; background-clip: text;
+    transition: background-position 0.7s var(--ease), -webkit-text-stroke-color 0.4s;
+  }
+  .highlights__item:hover .highlights__num { background-position: 0 0; -webkit-text-stroke-color: var(--lotus); }
+  .highlights__label { display: block; margin: 1rem 0 0.6rem; font-weight: 480; color: var(--lotus); font-size: var(--fs-sm); }
+  .highlights__desc { font-size: var(--fs-sm); color: var(--slate); margin: 0; }
+
+  @media (max-width: 1024px) {
+    .highlights__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .highlights__row > .highlights__item:nth-child(n) { padding: 1.75rem 1.25rem; border-left: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule-strong); }
+    .highlights__row > .highlights__item:nth-child(3n + 1) { padding-left: 0; border-left: 0; }
+  }
+  @media (max-width: 600px) {
+    .highlights__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .highlights__row > .highlights__item:nth-child(n) { padding: 1.5rem 0.75rem 1.5rem 1.1rem; border-left: 1px solid var(--rule-strong); }
+    .highlights__row > .highlights__item:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .highlights__row > .highlights__item:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  }
+</style>

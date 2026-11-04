@@ -1,0 +1,73 @@
+---
+interface Fact { label: string; value: string }
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  crumb: string;
+  facts?: Fact[];
+  image: { src: string; alt: string; width: number; height: number; pos?: string; zoom?: number; origin?: string };
+  caption?: Fact[];
+  nav?: { href: string; label: string }[];
+  navLabel?: string;
+  logo?: { src: string; alt: string; width: number; height: number };
+}
+
+const { eyebrow, title, lead, crumb, facts = [], image, caption = [], nav = [], navLabel = 'On this page', logo } = Astro.props;
+const imgStyle = [
+  image.pos && `--pos:${image.pos}`,
+  image.zoom && `--zoom:${image.zoom}`,
+  image.origin && `--origin:${image.origin}`,
+].filter(Boolean).join(';');
+---
+
+<header class="banner">
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="crumbs">
+        <li><a href="/">Home</a></li>
+        <li aria-current="page">{crumb}</li>
+      </ol>
+    </nav>
+
+    <div class="frame banner__media">
+      <img src={image.src} alt={image.alt} width={image.width} height={image.height} fetchpriority="high" decoding="async" style={imgStyle} />
+    </div>
+
+    <div class="grid-12 banner__body">
+      <div class="banner__card">
+        {logo && <img class="banner__logo" src={logo.src} alt={logo.alt} width={logo.width} height={logo.height} />}
+        <p class="kicker">{eyebrow}</p>
+        <h1 class="banner__title">{title}</h1>
+      </div>
+      <div class="banner__aside">
+        <p class="banner__lead">{lead}</p>
+        {caption.length > 0 && (
+          <dl class="banner__details">
+            {caption.map((f) => (
+              <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+            ))}
+          </dl>
+        )}
+      </div>
+    </div>
+
+    {facts.length > 0 && (
+      <dl class="facts banner__facts" style={`--cols:${facts.length}`}>
+        {facts.map((f) => (
+          <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+        ))}
+      </dl>
+    )}
+  </div>
+
+  {nav.length > 0 && (
+    <nav class="subnav" aria-label={navLabel}>
+      <div class="wrap">
+        <ul>
+          {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </div>
+    </nav>
+  )}
+</header>

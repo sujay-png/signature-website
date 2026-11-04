@@ -1,0 +1,78 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const residences = [
+  {
+    badge: '2 BHK Residences',
+    title: '2 BHK Luxury Residences',
+    text: 'Intelligent spatial zoning separating social living and dining spaces from peaceful bedroom retreats.',
+    areas: ['1034', '1084', '1125', '1183'],
+    image: '/images/floor-plans/typical-unit-002.webp',
+    w: 650, h: 960,
+    alt: '2 BHK Apartment Layout Preview - Lotus Signature',
+    cta: 'View 2 BHK Floor Plans',
+  },
+  {
+    badge: '3 BHK Residences',
+    title: '3 BHK Grand Residences',
+    text: 'Generous corner homes featuring expansive living salons, dedicated family dining, and triple private balconies.',
+    areas: ['1700', '1718'],
+    image: '/images/floor-plans/typical-unit-001.webp',
+    w: 620, h: 1100,
+    alt: '3 BHK Apartment Layout Preview - Lotus Signature',
+    cta: 'View 3 BHK Floor Plans',
+  },
+];
+---
+
+<section class="section tone-paper residences" id="configurations">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="Spatial planning"
+      title="Residence Configurations."
+      description="Choose between meticulously tailored 2 BHK and 3 BHK layouts with generous balcony proportions and natural cross-ventilation."
+    >
+      <a href="/concept-design#explorer" class="link">Explore Interactive Floor Plans</a>
+    </SectionHeading>
+
+    <div class="residences__grid">
+      {residences.map((r) => (
+        <article class="residence">
+          <a href="/concept-design#explorer" class="frame frame--plate residence__plan" aria-label={r.cta}>
+            <img src={r.image} alt={r.alt} width={r.w} height={r.h} loading="lazy" decoding="async" />
+          </a>
+          <div class="residence__body">
+            <span class="tag">{r.badge}</span>
+            <h3 class="residence__title">{r.title}</h3>
+            <p class="muted">{r.text}</p>
+            <div class="residence__areas">
+              <span class="residence__areas-label">Available Saleable Areas</span>
+              <ul>
+                {r.areas.map((a) => <li class="num">{a} <span>sq. ft.</span></li>)}
+              </ul>
+            </div>
+            <a href="/concept-design#explorer" class="btn">{r.cta}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .residences__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 4vw, 4rem); }
+  .residence { display: grid; grid-template-rows: auto 1fr; }
+  .residence__plan { aspect-ratio: 4 / 4.2; display: block; transition: border-color 0.3s var(--ease); }
+  .residence__plan:hover { border-color: var(--rule-strong); }
+  .residence__body { padding-top: 2rem; display: flex; flex-direction: column; align-items: flex-start; }
+  .residence__title { font-size: var(--fs-lg); margin: 0.5rem 0 0.9rem; }
+  .residence__areas { width: 100%; margin: 0.75rem 0 2rem; border-top: 1px solid var(--rule); padding-top: 1rem; }
+  .residence__areas-label { display: block; font-size: var(--fs-xs); color: var(--slate); margin-bottom: 0.6rem; }
+  .residence__areas ul { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; }
+  .residence__areas li { font-size: 1.6rem; }
+  .residence__areas li span { font-family: var(--font-body); font-size: var(--fs-xs); color: var(--slate); }
+  .residence .btn { margin-top: auto; }
+  @media (max-width: 860px) {
+    .residences__grid { grid-template-columns: 1fr; }
+  }
+</style>
