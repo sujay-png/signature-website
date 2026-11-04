@@ -32,13 +32,13 @@ const residences = [
       title="Residence Configurations."
       description="Choose between meticulously tailored 2 BHK and 3 BHK layouts with generous balcony proportions and natural cross-ventilation."
     >
-      <a href="/projects#explorer" class="link">Explore Interactive Floor Plans</a>
+      <a href="/concept-design#explorer" class="link">Explore Interactive Floor Plans</a>
     </SectionHeading>
 
     <div class="residences__grid">
       {residences.map((r) => (
         <article class="residence">
-          <a href="/projects#explorer" class="frame frame--plate residence__plan" aria-label={r.cta}>
+          <a href="/concept-design#explorer" class="frame frame--plate residence__plan" aria-label={r.cta}>
             <img src={r.image} alt={r.alt} width={r.w} height={r.h} loading="lazy" decoding="async" />
           </a>
           <div class="residence__body">
@@ -51,7 +51,7 @@ const residences = [
                 {r.areas.map((a) => <li class="num">{a} <span>sq. ft.</span></li>)}
               </ul>
             </div>
-            <a href="/projects#explorer" class="btn">{r.cta}</a>
+            <a href="/concept-design#explorer" class="btn">{r.cta}</a>
           </div>
         </article>
       ))}

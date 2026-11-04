@@ -2,42 +2,23 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
-import ProjectGallery from '../components/project/ProjectGallery.astro';
-import InteriorGallery from '../components/project/InteriorGallery.astro';
-import ProjectSpecifications from '../components/project/ProjectSpecifications.astro';
-import FloorPlanExplorer from '../components/concept/FloorPlanExplorer.astro';
 import CTASection from '../components/ui/CTASection.astro';
-import { allApartmentConfigurations } from '../data/floorPlans';
+import { conceptStudio, conceptCategories, conceptProjects, pmcProjects } from '../data/conceptDesign';
 
+const ongoing = conceptProjects.filter((p) => p.status === 'Ongoing').length;
+const completed = conceptProjects.filter((p) => p.status === 'Completed').length;
+const countBy = (c: string) => conceptProjects.filter((p) => p.category === c).length;
+const initials = (name: string) =>
+  name.replace(/[^A-Za-z\s]/g, ' ').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+// Portfolio grid is hidden for now at the client's request. Set to true to show it again.
+const SHOW_PORTFOLIO = false;
 
-const factsheet = [
-  { label: 'Urban Address', title: 'Bendoorwell, Mangaluru', text: 'Direct access from existing 9.00M and proposed 6.00M wide municipal roads, situated within minutes of PVS Junction and central city conveniences.' },
-  { label: 'Exclusive Density', title: '22 Residential Apartments', text: 'An intimate enclave with only 4 residences per typical floor, eliminating shared common living walls and providing unparalleled residential privacy.' },
-  { label: 'Building Structure', title: 'Ground + 4 Upper Floors', text: 'Low-rise contemporary architecture engineered with robust RCC framework, cantilevered balconies, and a finished rooftop terrace with pergola canopy.' },
-  { label: 'Dedicated Parking', title: 'Subterranean Basement', text: 'Dedicated basement parking garage with numbered bays, gentle vehicular entry/exit ramps, wide driveways, and direct lift core access.' },
-  { label: 'Vertical Mobility', title: '8-Passenger Automated Lift', text: '1 automated high-speed elevator with automatic rescue device (ARD), connecting basement parking through all residential upper floors.' },
-  { label: 'Power & Utilities', title: 'Dual Water & Standby Generator', text: 'Dual water supply via Borewell + Corporation connection, rainwater harvesting, reticulated gas line, and soundproof generator backup.' },
-];
-
-const units = [
-  { type: '2 BHK', floor: 'Ground Floor', meta: 'Unit 001, Ground Level', area: '1034 sq. ft.', img: '/images/floor-plans/ground-unit-001.webp', w: 920, h: 860, alt: '2 BHK 1034 sq. ft. Floor Plan',
-    text: 'Living lounge (14\'6"x10\'0"), dining (9\'0"x12\'6"), kitchen with 4\'0" utility, master bedroom (10\'0"x13\'0") with attached bath, and second bedroom.' },
-  { type: '2 BHK', floor: '1st - 4th Floors', meta: 'Unit 004, Typical Level', area: '1084 sq. ft.', img: '/images/floor-plans/typical-unit-004.webp', w: 850, h: 750, alt: '2 BHK 1084 sq. ft. Floor Plan',
-    text: 'Dual private balconies (4\'0" and 5\'0"), living (12\'6"x10\'0"), dining, kitchen with utility, and master suite (13\'4"x10\'0") with private balcony.' },
-  { type: '2 BHK', floor: '1st - 4th Floors', meta: 'Unit 003, Typical Level', area: '1125 sq. ft.', img: '/images/floor-plans/typical-unit-003.webp', w: 950, h: 680, alt: '2 BHK 1125 sq. ft. Floor Plan',
-    text: 'Corner 2 BHK layout with dual 4\'6" wide balconies, expansive 16\'6" living room, cross-ventilation, and master suite with attached toilet.' },
-  { type: '2 BHK', floor: '1st - 4th Floors', meta: 'Unit 002, Typical Level', area: '1183 sq. ft.', img: '/images/floor-plans/typical-unit-002.webp', w: 650, h: 960, alt: '2 BHK 1183 sq. ft. Floor Plan',
-    text: 'Generous 2 BHK with double balconies, large living lounge, dining hall, kitchen with 4\'5" utility, and master bedroom with ensuite bath.' },
-  { type: '3 BHK', floor: '1st - 4th Floors', meta: 'Unit 001, Typical Level', area: '1700 sq. ft.', img: '/images/floor-plans/typical-unit-001.webp', w: 620, h: 1100, alt: '3 BHK 1700 sq. ft. Floor Plan',
-    text: 'Corner 3 BHK residence with 3 private balconies, 17\'0" living room, family dining, master suite (12\'0"x14\'0"), and 2 additional bedrooms.' },
-  { type: '3 BHK', floor: 'Ground Floor', meta: 'Unit 002, Ground Level', area: '1718 sq. ft.', img: '/images/floor-plans/ground-unit-002.webp', w: 1020, h: 580, alt: '3 BHK 1718 sq. ft. Floor Plan',
-    text: 'Largest residence in the development featuring expansive family spaces, 3 bedrooms, extensive utility area, and seamless ground floor accessibility.' },
-];
+const heroImage = conceptProjects.find((p) => p.images.length && p.id !== 'lotus-signature')?.images[0];
 ---
 
 <PageLayout
-  title="Projects | Lotus Signature Residences, Floor Plans & Specifications"
-  description="Explore Lotus Signature in Bendoorwell, Mangaluru: 22 luxury residences, 2 & 3 BHK configurations (1034 to 1718 sq. ft.), architectural exterior & interior galleries and specifications."
+  title="Projects | Architecture & Interior Design Portfolio by Concept Design, Mangaluru"
+  description="Concept Design is the architecture and interior design studio behind Lotus Signature. Explore ongoing and completed residential apartments, villas, commercial and mixed-use projects across Mangaluru."
   currentPath="/projects"
 >
   <PageHero
@@ -51,7 +32,9 @@ const units = [
       { label: 'Upper Floors', value: 'G + 4' },
       { label: 'Vastu Compliant', value: '100%' },
     ]}
-    image={{ src: '/images/hero/hero-exterior.webp', alt: 'Lotus Signature - Complete Architectural Elevation at Dusk', width: 1720, height: 1450, pos: '0% 55%', zoom: 1.15, origin: '0% 55%' }}
+    image={heroImage
+      ? { src: heroImage, alt: 'Concept Design architecture project', width: 1600, height: 1000, pos: '50% 50%' }
+      : { src: '/images/hero/hero-exterior.webp', alt: 'Lotus Signature, designed by Concept Design', width: 1720, height: 1450, pos: '0% 30%', zoom: 1.15, origin: '0% 30%' }}
     caption={[
       { label: 'Location', value: 'Bendoorwell, Mangaluru' },
       { label: 'Enclave Size', value: '22 Private Residences' },
@@ -59,191 +42,240 @@ const units = [
       { label: 'Configurations', value: '2 & 3 BHK (1034 – 1718 sq. ft.)' },
     ]}
     nav={[
-      { href: '#overview', label: 'Overview' },
-      { href: '#exterior-gallery', label: 'Exterior Gallery' },
-      { href: '#interiors', label: 'Interior Spaces' },
-      { href: '#configurations', label: 'Configurations' },
-      { href: '#floor-plans', label: 'Floor Plans' },
-      { href: '#specifications', label: 'Specifications' },
+      ...(SHOW_PORTFOLIO ? [{ href: '#portfolio', label: 'Portfolio' }] : []),
+      { href: '#pmc', label: 'Project Management' },
     ]}
   />
 
-  <!-- Overview -->
-  <section class="section tone-paper" id="overview">
+  {/* Portfolio */}
+  {SHOW_PORTFOLIO && (
+  <section class="section tone-paper" id="portfolio">
     <div class="wrap">
       <SectionHeading
-        eyebrow="Project overview"
-        title="Architectural Blueprint & Key Facts."
-        description="Designed as an exclusive low-density residential community where contemporary styling meets coastal micro-climatic intelligence."
-      />
-      <div class="factsheet">
-        {factsheet.map((f) => (
-          <div class="factsheet__item">
-            <span class="tag">{f.label}</span>
-            <h3 class="factsheet__title">{f.title}</h3>
-            <p class="muted small">{f.text}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <ProjectGallery />
-  <InteriorGallery />
-
-  <!-- Configurations -->
-  <section class="section tone-paper" id="configurations">
-    <div class="wrap">
-      <SectionHeading
-        eyebrow="Residence configurations"
-        title="Available 2 BHK & 3 BHK Layouts."
-        description="Six accurately calculated saleable areas ranging from 1034 to 1718 sq. ft. Each configuration is planned with clear spatial zoning and wide private balconies."
+        eyebrow="Selected work"
+        title="Architecture Portfolio."
+        description="Contemporary residences, apartment buildings and commercial addresses, from completed homes to projects taking shape today."
       >
-        <div class="tabs" role="group" aria-label="Filter layouts">
-          <button type="button" class="active" data-filter="all" aria-pressed="true">All Units</button>
-          <button type="button" data-filter="2 BHK" aria-pressed="false">2 BHK (4 Sizes)</button>
-          <button type="button" data-filter="3 BHK" aria-pressed="false">3 BHK (2 Sizes)</button>
+        <div class="cd-filters">
+          <div class="tabs" role="group" aria-label="Filter by type">
+            <button type="button" class="active" data-cd-cat="all" aria-pressed="true">All ({conceptProjects.length})</button>
+            {conceptCategories.map((c) => (
+              <button type="button" data-cd-cat={c} aria-pressed="false">{c} ({countBy(c)})</button>
+            ))}
+          </div>
+          <div class="tabs" role="group" aria-label="Filter by status">
+            <button type="button" class="active" data-cd-status="all" aria-pressed="true">All</button>
+            <button type="button" data-cd-status="Ongoing" aria-pressed="false">Ongoing</button>
+            <button type="button" data-cd-status="Completed" aria-pressed="false">Completed</button>
+          </div>
         </div>
       </SectionHeading>
 
-      <div class="units" id="configs-container">
-        {units.map((u) => (
-          <article class="unit" data-type={u.type}>
-            <a href="#explorer" class="frame frame--plate unit__plan" aria-label={`Inspect technical plan, ${u.alt}`}>
-              <img src={u.img} alt={u.alt} width={u.w} height={u.h} loading="lazy" decoding="async" />
-            </a>
-            <div class="unit__head">
-              <span class="tag">{u.type}</span>
-              <span class="unit__floor">{u.floor}</span>
-            </div>
-            <p class="unit__area num">{u.area}</p>
-            <p class="unit__meta">{u.meta}</p>
-            <p class="muted small">{u.text}</p>
-            <a href="#explorer" class="link unit__link">Inspect Technical Plan</a>
-          </article>
+      <ul class="cd-grid" id="cd-grid">
+        {conceptProjects.map((p) => (
+          <li class="cd-card" data-cat={p.category} data-status={p.status}>
+            <button type="button" class="cd-card__btn" data-cd-open={p.id} aria-haspopup="dialog">
+              <span class="frame cd-card__media">
+                {p.images.length
+                  ? <img src={p.images[0]} alt={`${p.name}${p.location ? ', ' + p.location : ''}`} loading="lazy" decoding="async" />
+                  : <span class="cd-card__tile" aria-hidden="true">{initials(p.name)}</span>}
+                <span class={`cd-card__status ${p.status === 'Completed' ? 'is-done' : ''}`}>{p.status}</span>
+              </span>
+              <span class="cd-card__cat">{p.category}</span>
+              <span class="cd-card__name">{p.name}</span>
+              {p.location && <span class="cd-card__loc">{p.location}</span>}
+              <span class="cd-card__more">View project</span>
+            </button>
+          </li>
         ))}
-      </div>
-
-      <div class="table-wrap">
-        <table class="config-table">
-          <caption class="visually-hidden">Summary of configurations</caption>
-          <thead>
-            <tr>
-              <th scope="col">Configuration</th>
-              <th scope="col">Unit No.</th>
-              <th scope="col">Floor Level</th>
-              <th scope="col">Saleable Area</th>
-              <th scope="col"><span class="visually-hidden">Detailed Explorer</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            {allApartmentConfigurations.map((item) => (
-              <tr>
-                <td>{item.type}</td>
-                <td>Unit {item.unit}</td>
-                <td class="muted">{item.level}</td>
-                <td class="config-table__area num">{item.saleableArea}</td>
-                <td class="config-table__action"><a href="#explorer" class="link">Explore Dimensions</a></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      </ul>
+      <p class="cd-empty" id="cd-empty" hidden>No projects match these filters. Choose “All” to see the full portfolio.</p>
     </div>
   </section>
+  )}
 
-  <!-- Floor plans -->
-  <section class="section tone-mist" id="floor-plans">
+  <!-- PMC -->
+  <section class="section tone-mist" id="pmc">
     <div class="wrap">
       <SectionHeading
-        eyebrow="Technical drawings & schematics"
-        title="Interactive Floor Plan Explorer."
-        description="Select any level and apartment unit below to inspect original brochure technical drawings, room dimensions, and saleable area breakdowns with high-resolution zoom."
+        eyebrow="Project management consultancy"
+        title="Beyond the Drawing Board."
+        description="Alongside design, Concept Design supports clients through project management consultancy, presenting options and guiding decisions as homes move from concept to construction."
       />
-      <FloorPlanExplorer />
+      <ul class="pmc">
+        {pmcProjects.map((p) => (
+          <li class="pmc__item">
+            {p.images.length > 0 && (
+              <div class="pmc__images">
+                {p.images.map((src) => (
+                  <div class="frame zoomable" data-lightbox="true" data-lightbox-src={src} data-lightbox-caption={p.name}>
+                    <img src={src} alt={p.name} loading="lazy" decoding="async" />
+                  </div>
+                ))}
+              </div>
+            )}
+            <div class="pmc__text">
+              <h3 class="pmc__name">{p.name}</h3>
+              <p class="muted">{p.note}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
-  <ProjectSpecifications />
-
   <CTASection
-    eyebrow="Make your mark"
-    title="Your Signature Residence in Bendoorwell."
-    description="Speak directly with our senior booking directors to review available units, schedule a site walkthrough in Bendoorwell, or request technical documents."
-    primaryCtaText="Register Your Enquiry"
+    eyebrow="Work with Concept Design"
+    title="Planning a Home or Commercial Building?"
+    description="Speak with our team about architecture and interior design for your next residence, apartment building or commercial address."
+    primaryCtaText="Start A Conversation"
     primaryCtaLink="/contact"
-    secondaryCtaText="Contact Booking Desk"
-    secondaryCtaLink="/contact#booking-contacts"
+    secondaryCtaText="View Lotus Signature"
+    secondaryCtaLink="/concept-design"
   />
+
+  {/* Project detail dialog */}
+  {SHOW_PORTFOLIO && (
+    <>
+  <dialog class="cd-dialog" id="cd-dialog" aria-labelledby="cd-dialog-title">
+    <div class="cd-dialog__inner">
+      <button type="button" class="cd-dialog__close" data-cd-close aria-label="Close project">&times;</button>
+      <div class="cd-dialog__media" id="cd-dialog-media"></div>
+      <div class="cd-dialog__body">
+        <p class="cd-dialog__meta" id="cd-dialog-meta"></p>
+        <h2 class="cd-dialog__title" id="cd-dialog-title"></h2>
+        <p class="cd-dialog__loc" id="cd-dialog-loc"></p>
+        <div class="cd-dialog__desc" id="cd-dialog-desc"></div>
+        <a href="/contact" class="btn">Enquire About This Project</a>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="application/json" id="cd-data" set:html={JSON.stringify(conceptProjects)} />
+    </>
+  )}
 </PageLayout>
 
 <style>
-  .factsheet { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule); }
-  .factsheet__item { padding: 1.75rem 2rem 2rem 0; border-bottom: 1px solid var(--rule); }
-  .factsheet__item:not(:nth-child(3n + 1)) { padding-left: 2rem; border-left: 1px solid var(--rule); }
-  .factsheet__title { font-size: 1.4rem; margin: 0.5rem 0 0.75rem; }
+  .cd-filters { display: grid; gap: 0.75rem; justify-items: start; }
 
-  .units { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem clamp(1.5rem, 3vw, 2.5rem); }
-  .unit { display: flex; flex-direction: column; }
-  .unit__plan { display: block; aspect-ratio: 1 / 1; margin-bottom: 1.25rem; transition: border-color 0.3s var(--ease); }
-  .unit__plan:hover { border-color: var(--rule-strong); }
-  .unit__head { display: flex; justify-content: space-between; align-items: baseline; }
-  .unit__floor { font-size: var(--fs-xs); color: var(--slate); }
-  .unit__area { font-size: 2rem; line-height: 1.1; margin: 0.4rem 0 0.2rem; }
-  .unit__meta { font-size: var(--fs-xs); color: var(--slate); margin-bottom: 0.9rem; }
-  .unit__link { margin-top: auto; align-self: flex-start; }
-
-  .table-wrap { position: relative; margin-top: clamp(3.5rem, 6vw, 5rem); overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .config-table { min-width: 640px; font-size: var(--fs-sm); }
-  .config-table th { text-align: left; font-weight: 450; font-size: var(--fs-xs); color: var(--slate); padding: 0 1rem 0.9rem 0; border-bottom: 1px solid var(--graphite); }
-  .config-table td { padding: 1.1rem 1rem 1.1rem 0; border-bottom: 1px solid var(--rule); }
-  .config-table__area { font-size: 1.25rem; }
-  .config-table__action { text-align: right; }
-
-
-  @media (max-width: 640px) {
-    .config-table { min-width: 0; }
-    .config-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-    .config-table, .config-table tbody { display: block; border-top: 1px solid var(--graphite); }
-    .config-table tr { display: grid; grid-template-columns: auto 1fr auto; column-gap: 1rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid var(--rule); }
-    .config-table td { padding: 0; border: 0; }
-    .config-table td:nth-child(1) { color: var(--lotus); font-size: var(--fs-xs); font-weight: 480; }
-    .config-table td:nth-child(2) { font-size: var(--fs-sm); }
-    .config-table td:nth-child(3) { grid-column: 1 / 3; font-size: var(--fs-xs); }
-    .config-table td:nth-child(4) { grid-row: 1; grid-column: 3; }
-    .config-table td:nth-child(5) { grid-column: 3; grid-row: 2; }
-    .config-table__action .link { font-size: var(--fs-xs); }
+  .cd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem clamp(1.25rem, 2.5vw, 2rem); }
+  .cd-card__btn { display: flex; flex-direction: column; align-items: flex-start; width: 100%; text-align: left; }
+  .cd-card__media { display: block; width: 100%; aspect-ratio: 4 / 3; margin-bottom: 1.1rem; }
+  .cd-card__media img { transition: transform 0.9s var(--ease); }
+  .cd-card__btn:hover .cd-card__media img { transform: scale(1.04); }
+  .cd-card__tile {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 0.04em; color: rgba(34, 37, 43, 0.28);
+    background: linear-gradient(160deg, #f6eef3 0%, #e9dbe4 100%);
+    transition: color 0.4s var(--ease);
   }
-  @media (max-width: 960px) {
-    .units { grid-template-columns: 1fr 1fr; }
-    .factsheet { grid-template-columns: 1fr 1fr; }
-    .factsheet__item:not(:nth-child(3n + 1)) { padding-left: 0; border-left: 0; }
-    .factsheet__item:nth-child(even) { padding-left: 1.5rem; border-left: 1px solid var(--rule); }
+  .cd-card__btn:hover .cd-card__tile { color: var(--lotus); }
+  .cd-card__status {
+    position: absolute; top: 0.9rem; left: 0.9rem; padding: 0.3rem 0.65rem;
+    font-size: var(--fs-xs); font-weight: 480; background: rgba(255,255,255,0.88); color: var(--lotus); border-radius: 1px;
   }
-  @media (max-width: 640px) {
-    .units, .factsheet { grid-template-columns: 1fr; }
-    .factsheet__item:nth-child(even) { padding-left: 0; border-left: 0; }
+  .cd-card__status.is-done { color: var(--graphite); }
+  .cd-card__cat { font-size: var(--fs-xs); color: var(--slate); }
+  .cd-card__name { font-family: var(--font-display); font-size: 1.4rem; line-height: 1.2; margin: 0.25rem 0 0.15rem; }
+  .cd-card__loc { font-size: var(--fs-sm); color: var(--slate); }
+  .cd-card__more { margin-top: 0.85rem; font-size: var(--fs-sm); font-weight: 480; border-bottom: 1px solid currentColor; padding-bottom: 2px; transition: color 0.2s; }
+  .cd-card__btn:hover .cd-card__more { color: var(--lotus); }
+  .cd-empty { margin-top: 2rem; color: var(--slate); }
+
+  .pmc { display: grid; gap: 2rem; }
+  .pmc__item { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2.5rem; align-items: end; border-top: 1px solid var(--graphite); padding-top: 1.75rem; }
+  .pmc__item:not(:has(.pmc__images)) { grid-template-columns: 1fr; }
+  .pmc__images { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .pmc__images .frame { aspect-ratio: 4 / 3; }
+  .pmc__name { font-size: var(--fs-lg); margin-bottom: 0.5rem; }
+
+  /* Dialog */
+  .cd-dialog { width: min(1100px, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); padding: 0; border: 0; background: var(--paper); color: var(--graphite); box-shadow: 0 40px 100px -30px rgba(34, 37, 43, 0.4); }
+  .cd-dialog::backdrop { background: rgba(250, 250, 248, 0.88); backdrop-filter: blur(6px); }
+  .cd-dialog[open] { animation: cd-in 0.45s var(--ease); }
+  @keyframes cd-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .cd-dialog__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); max-height: calc(100dvh - 2rem); }
+  .cd-dialog__close { position: absolute; z-index: 2; top: 0.9rem; right: 0.9rem; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: #fff; border: 1px solid var(--rule-strong); font-size: 1.5rem; line-height: 1; }
+  .cd-dialog__close:hover { border-color: var(--graphite); }
+  .cd-dialog__media { background: var(--mist); overflow-y: auto; display: grid; gap: 2px; }
+  .cd-dialog__media :global(img) { width: 100%; height: auto; display: block; }
+  .cd-dialog__media :global(.cd-dialog__tile) { min-height: 360px; height: 100%; display: grid; place-items: center; font-family: var(--font-display); font-size: 5rem; color: rgba(34,37,43,0.25); background: linear-gradient(160deg, #f6eef3 0%, #e9dbe4 100%); }
+  .cd-dialog__body { padding: clamp(1.75rem, 4vw, 3rem); overflow-y: auto; }
+  .cd-dialog__meta { font-size: var(--fs-xs); color: var(--lotus); font-weight: 480; margin-bottom: 0.75rem; }
+  .cd-dialog__title { font-size: var(--fs-lg); padding-right: 2.5rem; }
+  .cd-dialog__loc { color: var(--slate); margin: 0.35rem 0 1.5rem; }
+  .cd-dialog__desc :global(p) { font-size: var(--fs-sm); color: var(--slate); }
+  .cd-dialog__desc { margin-bottom: 2rem; }
+
+  @media (max-width: 1024px) { .cd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 860px) {
+    .cd-filters, .cd-filters .tabs { width: 100%; }
+    .pmc__item { grid-template-columns: 1fr; }
+    .cd-dialog__inner { grid-template-columns: 1fr; overflow-y: auto; }
+    .cd-dialog__media, .cd-dialog__body { overflow: visible; }
+    .cd-dialog__media :global(.cd-dialog__tile) { min-height: 220px; }
+  }
+  @media (max-width: 560px) {
+    .cd-grid { grid-template-columns: 1fr; }
+    .cd-dialog { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; margin: 0; }
+    .cd-dialog__inner { max-height: 100dvh; }
   }
 </style>
 
 <script>
-  function bindFilter(attr: string, itemSelector: string, match: (item: HTMLElement, value: string) => boolean) {
-    const tabs = document.querySelectorAll<HTMLButtonElement>(`[${attr}]`);
-    const items = document.querySelectorAll<HTMLElement>(itemSelector);
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const value = tab.getAttribute(attr) || 'all';
-        tabs.forEach((t) => {
-          const on = t === tab;
-          t.classList.toggle('active', on);
-          t.setAttribute('aria-pressed', String(on));
-        });
-        items.forEach((item) => {
-          item.hidden = !(value === 'all' || match(item, value));
-        });
-      });
-    });
-  }
+  type P = { id: string; name: string; location?: string; category: string; status: string; description: string[]; images: string[] };
+  const dataEl = document.getElementById('cd-data');
+  if (dataEl) {
+  const data: P[] = JSON.parse(dataEl.textContent || '[]');
+  const cards = document.querySelectorAll<HTMLElement>('.cd-card');
+  const empty = document.getElementById('cd-empty')!;
+  let cat = 'all', status = 'all';
 
-  bindFilter('data-filter', '.unit', (el, v) => el.dataset.type === v);
+  const apply = () => {
+    let shown = 0;
+    cards.forEach((c) => {
+      const ok = (cat === 'all' || c.dataset.cat === cat) && (status === 'all' || c.dataset.status === status);
+      c.hidden = !ok; if (ok) shown++;
+    });
+    empty.hidden = shown > 0;
+  };
+  const bind = (attr: string, set: (v: string) => void) => {
+    const btns = document.querySelectorAll<HTMLButtonElement>(`[${attr}]`);
+    btns.forEach((b) => b.addEventListener('click', () => {
+      btns.forEach((x) => { x.classList.toggle('active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+      set(b.getAttribute(attr) || 'all'); apply();
+    }));
+  };
+  bind('data-cd-cat', (v) => (cat = v));
+  bind('data-cd-status', (v) => (status = v));
+
+  const dialog = document.getElementById('cd-dialog') as HTMLDialogElement;
+  const $ = (id: string) => document.getElementById(id)!;
+  const initials = (n: string) => n.replace(/[^A-Za-z\s]/g, ' ').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+  let opener: HTMLElement | null = null;
+
+  document.querySelectorAll<HTMLButtonElement>('[data-cd-open]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const p = data.find((x) => x.id === btn.dataset.cdOpen); if (!p) return;
+      opener = btn;
+      $('cd-dialog-meta').textContent = `${p.category}, ${p.status}`;
+      $('cd-dialog-title').textContent = p.name;
+      $('cd-dialog-loc').textContent = p.location || '';
+      $('cd-dialog-desc').replaceChildren(...p.description.map((t) => { const el = document.createElement('p'); el.textContent = t; return el; }));
+      const media = $('cd-dialog-media');
+      if (p.images.length) {
+        media.replaceChildren(...p.images.map((src) => { const im = document.createElement('img'); im.src = src; im.alt = p.name; im.loading = 'lazy'; return im; }));
+      } else {
+        const t = document.createElement('div'); t.className = 'cd-dialog__tile'; t.textContent = initials(p.name); media.replaceChildren(t);
+      }
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  const close = () => dialog.close();
+  dialog.querySelector('[data-cd-close]')!.addEventListener('click', close);
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+  dialog.addEventListener('close', () => { document.body.style.overflow = ''; opener?.focus(); });
+  }
 </script>
